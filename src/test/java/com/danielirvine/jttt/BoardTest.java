@@ -11,6 +11,14 @@ public class BoardTest
     assertBoardEquals(b, "---------");
   }
 
+  @Test
+  public void testCanPlayAMove()
+  {
+    Board b = Board.empty(3);
+    b = b.play(1, new Player('X'));
+    assertBoardEquals(b, "-X-------");
+  }
+
   private void assertBoardEquals(Board actual, String expected)
   {
     int length = actual.getSize() * actual.getSize();

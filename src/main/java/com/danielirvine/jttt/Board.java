@@ -5,12 +5,27 @@ public class Board
   private int size;
   private Player[] board;
 
+  private Board(int size, Player[] board)
+  {
+    this.size = size;
+    this.board = board;
+  }
+
   public static Board empty(int size)
   {
-    Board b = new Board();
-    b.size = size;
-    b.board = new Player[size*size];
-    return b;
+    return new Board(size, new Player[size*size]);
+  }
+
+  public Board play(int sq, Player player)
+  {
+    if (board[sq] == null)
+    {
+      Player[] newBoard = board.clone();
+      newBoard[sq] = player;
+      return new Board(size, newBoard);
+    }
+
+    return this;
   }
 
   public int getSize()
