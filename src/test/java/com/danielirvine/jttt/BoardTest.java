@@ -19,6 +19,15 @@ public class BoardTest
     assertBoardEquals(b, "-X-------");
   }
 
+  @Test
+  public void testDoesNotPlayMoveInSquareAlreadyPlayed()
+  {
+    Board b = Board.empty(3);
+    b = b.play(1, new Player('X'));
+    b = b.play(1, new Player('O'));
+    assertBoardEquals(b, "-X-------");
+  }
+
   private void assertBoardEquals(Board actual, String expected)
   {
     int length = actual.getSize() * actual.getSize();
