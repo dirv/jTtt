@@ -43,6 +43,15 @@ public class BoardTest
     assertEquals(Player.o, b.getNextPlayer());
   }
 
+  @Test
+  public void testCanMarkMultipleSquares()
+  {
+    Board b = Board.empty(3);
+    b = b.play(0);
+    b = b.play(1);
+    assertBoardEquals(b, "XO-------");
+  }
+
   private void assertBoardEquals(Board actual, String expected)
   {
     int length = actual.getSize() * actual.getSize();
