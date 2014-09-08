@@ -15,7 +15,7 @@ public class BoardTest
   public void testCanPlayAMove()
   {
     Board b = Board.empty(3);
-    b = b.play(1, new Player('X'));
+    b = b.play(1);
     assertBoardEquals(b, "-X-------");
   }
 
@@ -23,9 +23,24 @@ public class BoardTest
   public void testDoesNotPlayMoveInSquareAlreadyPlayed()
   {
     Board b = Board.empty(3);
-    b = b.play(1, new Player('X'));
-    b = b.play(1, new Player('O'));
+    b = b.play(1);
+    b = b.play(1);
     assertBoardEquals(b, "-X-------");
+  }
+
+  @Test
+  public void testGetNextPlayerReturnsPlayerX()
+  {
+    Board b = Board.empty(3);
+    assertEquals(Player.x, b.getNextPlayer());
+  }
+
+  @Test
+  public void testGetNextPlayerReturnsPlayerO()
+  {
+    Board b = Board.empty(3);
+    b = b.play(1);
+    assertEquals(Player.o, b.getNextPlayer());
   }
 
   private void assertBoardEquals(Board actual, String expected)
