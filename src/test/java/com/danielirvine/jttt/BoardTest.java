@@ -13,6 +13,21 @@ public class BoardTest
 
   private void assertBoardEquals(Board actual, String expected)
   {
-    assertEquals(expected.length(), actual.getSize() * actual.getSize());
+    int length = actual.getSize() * actual.getSize();
+    assertEquals(expected.length(), length);
+    StringBuilder s = new StringBuilder();
+    for(int i = 0; i < length; ++i)
+    {
+      Player p = actual.getPlayer(i);
+      if (p == null)
+      {
+        s.append("-");
+      }
+      else
+      {
+        s.append(p.getMark());
+      }
+    }
+    assertEquals(expected, s.toString());
   }
 }
