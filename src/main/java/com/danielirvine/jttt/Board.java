@@ -1,4 +1,6 @@
 package com.danielirvine.jttt;
+import java.util.*;
+import java.util.stream.*;
 
 public class Board
 {
@@ -26,6 +28,32 @@ public class Board
     }
 
     return this;
+  }
+
+  public boolean isWon()
+  {
+    for(List<Integer> combo : winningRows()) {
+      Object[] player = combo.stream()
+        .map((sq) -> board[sq])
+        .distinct()
+        .toArray();
+      if (player.length == 1 && player[0] != null) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public List<List<Integer>> winningRows()
+  {
+    List<List<Integer>> rows = new ArrayList<List<Integer>>();
+    for(int i = 0; i < size; ++i)
+    {
+      int start = i * size;
+      rows.add(IntStream.range(start, start + size).boxed().collect(Collectors.toList()));
+    }
+    return rows;
   }
 
   public Player getNextPlayer()

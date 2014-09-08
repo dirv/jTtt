@@ -52,6 +52,20 @@ public class BoardTest
     assertBoardEquals(b, "XO-------");
   }
 
+  @Test
+  public void testPlayerXCanWin()
+  {
+    assertTrue(boardWithSequence(3, 0, 4, 1, 5, 2).isWon());
+  }
+
+  private Board boardWithSequence(int size, int... plays)
+  {
+    Board b = Board.empty(size);
+    for(int p : plays)
+      b.play(p);
+    return b;
+  }
+
   private void assertBoardEquals(Board actual, String expected)
   {
     int length = actual.getSize() * actual.getSize();
