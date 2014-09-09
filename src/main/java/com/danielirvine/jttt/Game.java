@@ -4,12 +4,29 @@ import java.io.*;
 public class Game
 {
   private PrintWriter out;
+  private BufferedReader in;
   private Board board;
 
-  public Game(OutputStream out, int size)
+  public Game(OutputStream out, InputStream in, int size)
   {
     this.out = new PrintWriter(out);
+    this.in = new BufferedReader(new InputStreamReader(in));
     this.board = Board.empty(size);
+  }
+
+  public void playAll()
+  {
+    display();
+    while(!board.isDrawn() && !board.isWon())
+    {
+      try {
+        play(Integer.parseInt(in.readLine().trim()) - 1);
+        display();
+      }
+      catch(IOException ex)
+      {
+      }
+    }
   }
 
   public void play(int sq)
@@ -21,7 +38,7 @@ public class Game
   {
     displayBoard();
     if (board.isWon()) {
-      out.print(nextPlayerMark());
+      out.print(lastPlayerMark());
       out.println(" wins!");
     }
     else if (board.isDrawn()) {
@@ -34,9 +51,14 @@ public class Game
     out.flush();
   }
 
-  private char nextPlayerMark()
+  private char lastPlayerMark()
   {
     return board.getLastPlayer().getMark();
+  }
+
+  private char nextPlayerMark()
+  {
+    return board.getNextPlayer().getMark();
   }
 
   private void displayBoard()

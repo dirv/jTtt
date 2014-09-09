@@ -7,6 +7,7 @@ import static org.hamcrest.CoreMatchers.*;
 public class GameTest
 {
   private OutputStream output = new ByteArrayOutputStream();
+  private InputStream input = new ByteArrayInputStream(new byte[0]);
   private Game g;
 
   @Test
@@ -64,14 +65,37 @@ public class GameTest
     assertThat(output.toString(), containsString("Please enter a square"));
   }
 
+  @Test
+  public void testPlaysGameUntilWin()
+  {
+    setInputSequence("1", "4", "2", "5", "3");
+    create3x3Game();
+    g.playAll();
+    assertThat(output.toString(), containsString("X wins!"));
+  }
+
+  @Test
+  public void testDisplaysInitialBoard()
+  {
+    create3x3Game();
+    playSequence(0, 3, 1, 4, 2);
+    g.playAll();
+    assertThat(output.toString(), containsString("X wins!"));
+  }
+
+  private void setInputSequence(String... inputs)
+  {
+    input = new ByteArrayInputStream(String.join("\n", inputs).getBytes());
+  }
+
   private void create3x3Game()
   {
-    g = new Game(output, 3);
+    g = new Game(output, input, 3);
   }
 
   private void create4x4Game()
   {
-    g = new Game(output, 4);
+    g = new Game(output, input, 4);
   }
 
   private void playSequence(int... moves)
