@@ -18,6 +18,11 @@ public class Board
     return new Board(size, new Player[size*size]);
   }
 
+  public Player markAt(int sq)
+  {
+    return board[sq];
+  }
+
   public Board play(int sq)
   {
     if (board[sq] == null)
