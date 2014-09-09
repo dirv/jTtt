@@ -21,13 +21,22 @@ public class Game
   {
     displayBoard();
     if (board.isWon()) {
-      out.print(board.getLastPlayer().getMark());
+      out.print(nextPlayerMark());
       out.println(" wins!");
     }
-    if (board.isDrawn()) {
+    else if (board.isDrawn()) {
       out.println("It's a draw!");
     }
+    else {
+      out.print(nextPlayerMark());
+      out.println("'s go. Please enter a square 1-9:");
+    }
     out.flush();
+  }
+
+  private char nextPlayerMark()
+  {
+    return board.getLastPlayer().getMark();
   }
 
   private void displayBoard()

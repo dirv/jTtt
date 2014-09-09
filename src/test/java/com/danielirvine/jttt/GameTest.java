@@ -73,6 +73,14 @@ public class GameTest
     assertThat(output.toString(), containsString("It's a draw!"));
   }
 
+  @Test
+  public void testShowsPlayMessageWhenNotFinished()
+  {
+    create3x3Game();
+    g.display();
+    assertThat(output.toString(), containsString("Please enter a square"));
+  }
+
   private void create3x3Game()
   {
     g = new Game(output, 3);
