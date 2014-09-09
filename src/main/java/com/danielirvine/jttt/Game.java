@@ -41,16 +41,22 @@ public class Game
 
   private void displayBoard()
   {
+    new TableWriter(out).print(boardToArray());
+  }
+
+  private String[][] boardToArray()
+  {
     int size = board.getSize();
-    int squares = size * size;
-    for(int i = 0; i < squares; i++)
-    {
-      Player p = board.markAt(i);
-      out.print(p == null ? '-' : p.getMark());
-      if ((i+1) % size == 0)
-      {
-        out.println();
+    String[][] a = new String[size][];
+    for(int i = 0; i < size; ++i) {
+      a[i] = new String[size];
+      for(int j = 0; j < size; ++j) {
+        int cell = i*size + j;
+        Player p = board.markAt(cell);
+        a[i][j] = p == null ? Integer.toString(cell + 1) : Character.toString(p.getMark());
       }
     }
+    return a;
   }
+
 }

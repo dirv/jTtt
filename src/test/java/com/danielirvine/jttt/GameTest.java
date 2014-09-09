@@ -14,7 +14,8 @@ public class GameTest
   {
     create3x3Game();
     g.display();
-    assertEquals(9, occurrencesInOutput("-"));
+    assertEquals(0, occurrencesInTable("X"));
+    assertEquals(0, occurrencesInTable("O"));
   }
 
   @Test
@@ -23,9 +24,8 @@ public class GameTest
     create3x3Game();
     playSequence(0, 3, 6, 4, 2);
     g.display();
-    assertEquals(2, occurrencesInOutput("O"));
-    assertEquals(3, occurrencesInOutput("X"));
-    assertEquals(4, occurrencesInOutput("-"));
+    assertEquals(2, occurrencesInTable("O"));
+    assertEquals(3, occurrencesInTable("X"));
   }
 
   @Test
@@ -34,25 +34,8 @@ public class GameTest
     create4x4Game();
     playSequence(0, 15, 1, 14);
     g.display();
-    assertEquals(2, occurrencesInOutput("X"));
-    assertEquals(2, occurrencesInOutput("O"));
-    assertEquals(12, occurrencesInOutput("-"));
-  }
-
-  @Test
-  public void testDrawsThreeLinesFor3x3Game()
-  {
-    create3x3Game();
-    g.display();
-    assertEquals(3, occurrencesInOutput("\n"));
-  }
-
-  @Test
-  public void testDrawsFourLinesFor4x4Game()
-  {
-    create4x4Game();
-    g.display();
-    assertEquals(4, occurrencesInOutput("\n"));
+    assertEquals(2, occurrencesInTable("X"));
+    assertEquals(2, occurrencesInTable("O"));
   }
 
   @Test
@@ -97,9 +80,10 @@ public class GameTest
       g.play(sq);
   }
 
-  private int occurrencesInOutput(String c)
+  private int occurrencesInTable(String c)
   {
-    String s = output.toString();
+    String s = output.toString().trim();
+    s = s.substring(0, s.lastIndexOf("\n"));
     return s.length() - s.replace(c, "").length();
   }
 }
