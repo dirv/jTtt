@@ -75,15 +75,15 @@ public class TableWriter
     return String.format("%1$" + n + "s", s);
   }
 
-  private void printDivideLine(int left, int right, int join, int cellWidth, int cols)
+  private void printDivideLine(char left, char right, char join, int cellWidth, int cols)
   {
     out.print(left);
     for(int i = 0; i < cols - 1; ++i )
     {
-      printHorizontalDivider(cellWidth);
+      printHorizontalDivider(cellWidth + 2);
       out.print(join);
     }
-    printHorizontalDivider(cellWidth);
+    printHorizontalDivider(cellWidth + 2);
     out.println(right);
   }
 
