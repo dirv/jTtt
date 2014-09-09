@@ -68,8 +68,7 @@ public class GameTest
   @Test
   public void testPlaysGameUntilWin()
   {
-    setInputSequence("1", "4", "2", "5", "3");
-    create3x3Game();
+    create3x3Game("1", "4", "2", "5", "3");
     g.playAll();
     assertThat(output.toString(), containsString("X wins!"));
   }
@@ -83,19 +82,16 @@ public class GameTest
     assertThat(output.toString(), containsString("X wins!"));
   }
 
-  private void setInputSequence(String... inputs)
+  private void create3x3Game(String... inputs)
   {
-    input = new ByteArrayInputStream(String.join("\n", inputs).getBytes());
-  }
-
-  private void create3x3Game()
-  {
-    g = new Game(output, input, 3);
+    input = new ByteArrayInputStream(("3\n" + String.join("\n", inputs)).getBytes());
+    g = new Game(output, input);
   }
 
   private void create4x4Game()
   {
-    g = new Game(output, input, 4);
+    input = new ByteArrayInputStream("4\n".getBytes());
+    g = new Game(output, input);
   }
 
   private void playSequence(int... moves)

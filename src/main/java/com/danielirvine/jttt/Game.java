@@ -7,11 +7,11 @@ public class Game
   private BufferedReader in;
   private Board board;
 
-  public Game(OutputStream out, InputStream in, int size)
+  public Game(OutputStream out, InputStream in)
   {
     this.out = new PrintWriter(out);
     this.in = new BufferedReader(new InputStreamReader(in));
-    this.board = Board.empty(size);
+    createBoard();
   }
 
   public void playAll()
@@ -27,6 +27,28 @@ public class Game
       {
       }
     }
+  }
+
+  private void createBoard()
+  {
+    boolean validSize = false;
+    int size = 3;
+    while(!validSize)
+    {
+      try {
+        out.println("What size of board would you like to play? Choose 3 or 4.");
+        out.flush();
+        size = Integer.parseInt(in.readLine().trim());
+        if (size == 3 || size == 4)
+        {
+          validSize = true;
+        }
+      }
+      catch(IOException ex)
+      {
+      }
+    }
+    board = Board.empty(size);
   }
 
   public void play(int sq)
