@@ -53,16 +53,42 @@ public class BoardTest
   }
 
   @Test
-  public void testPlayerXCanWin()
+  public void testCanWinWithRow()
   {
     assertTrue(boardWithSequence(3, 0, 4, 1, 5, 2).isWon());
+  }
+
+  @Test
+  public void testCanWinWithColumn()
+  {
+    assertTrue(boardWithSequence(3, 1, 3, 4, 5, 7).isWon());
+  }
+
+  @Test
+  public void testCanWinWithDiagonal()
+  {
+    assertTrue(boardWithSequence(3, 0, 3, 4, 5, 8).isWon());
+  }
+
+  @Test
+  public void testCanWithWithDiagonal4x4()
+  {
+    assertTrue(boardWithSequence(4, 3, 0, 6, 1, 9, 2, 12).isWon());
+  }
+
+  @Test
+  public void testCanGetLastPlayer()
+  {
+    Board b = Board.empty(3);
+    b = b.play(0);
+    assertEquals(Player.x, b.getLastPlayer());
   }
 
   private Board boardWithSequence(int size, int... plays)
   {
     Board b = Board.empty(size);
     for(int p : plays)
-      b.play(p);
+      b = b.play(p);
     return b;
   }
 

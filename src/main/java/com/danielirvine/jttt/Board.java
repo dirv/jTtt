@@ -32,7 +32,12 @@ public class Board
 
   public boolean isWon()
   {
-    for(List<Integer> combo : winningRows()) {
+    List<List<Integer>> combos = new ArrayList<List<Integer>>();
+    addRows(combos);
+    addColumns(combos);
+    addDiagonals(combos);
+
+    for(List<Integer> combo : combos) {
       Object[] player = combo.stream()
         .map((sq) -> board[sq])
         .distinct()
@@ -45,15 +50,45 @@ public class Board
     return false;
   }
 
-  public List<List<Integer>> winningRows()
+  private void addRows(List<List<Integer>> combos)
   {
-    List<List<Integer>> rows = new ArrayList<List<Integer>>();
     for(int i = 0; i < size; ++i)
     {
       int start = i * size;
-      rows.add(IntStream.range(start, start + size).boxed().collect(Collectors.toList()));
+      combos.add(IntStream.range(start, start + size).boxed().collect(Collectors.toList()));
     }
-    return rows;
+  }
+
+  private void addColumns(List<List<Integer>> combos)
+  {
+    int max = size*size;
+    for (int i = 0; i < size; ++i)
+    {
+      List<Integer> combo = new ArrayList<Integer>();
+      for (int j = i; j < max; j += size)
+      {
+        combo.add(j);
+      }
+      combos.add(combo);
+    }
+  }
+
+  private void addDiagonals(List<List<Integer>> combos)
+  {
+    int max = size*size;
+    List<Integer> ltr = new ArrayList<Integer>();
+    for(int i = 0; i < max; i += size + 1)
+    {
+      ltr.add(i);
+    }
+    combos.add(ltr);
+
+    List<Integer> rtl = new ArrayList<Integer>();
+    for(int i = size - 1; i < max - 1; i += size - 1)
+    {
+      rtl.add(i);
+    }
+    combos.add(rtl);
   }
 
   public Player getNextPlayer()
@@ -63,6 +98,11 @@ public class Board
       if (p != null)
         next = other(next);
     return next;
+  }
+
+  public Player getLastPlayer()
+  {
+    return other(getNextPlayer());
   }
 
   public int getSize()
