@@ -35,6 +35,15 @@ public class Board
     return this;
   }
 
+  public boolean isDrawn()
+  {
+    for(Player p : board)
+      if (p == null)
+        return false;
+
+    return !isWon();
+  }
+
   public boolean isWon()
   {
     List<List<Integer>> combos = new ArrayList<List<Integer>>();
