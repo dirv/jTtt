@@ -3,8 +3,8 @@ import java.io.*;
 
 public class CliGame
 {
-  private PrintWriter out;
-  private BufferedReader in;
+  private final PrintWriter out;
+  private final BufferedReader in;
   private Game game;
 
   public CliGame(OutputStream out, InputStream in)
@@ -18,25 +18,39 @@ public class CliGame
   {
     display();
     boolean finished = false;
-    while(!finished)
-    {
-      try {
-        String read = in.readLine();
-        if(read == null)
-        {
-          finished = true;
-        }
-        else
-        {
-          game.play(Integer.parseInt(read.trim()) - 1);
-          finished = game.isDrawn() || game.isWon();
-        }
+    while(!finished) {
+      Player next = game.getNextPlayer();
+
+      if(next instanceof HumanPlayer) {
+        finished = setNextHumanMove((HumanPlayer)next);
+      }
+      if (!finished) {
+        game.playNextMove();
+        finished = game.isDrawn() || game.isWon();
         display();
       }
-      catch(IOException ex)
+    }
+  }
+
+  private boolean setNextHumanMove(HumanPlayer hp)
+  {
+    boolean noMoreInput = false;
+    try {
+      String read = in.readLine();
+      if(read == null)
       {
+        noMoreInput = true;
+      }
+      else
+      {
+        int sq = Integer.parseInt(read.trim()) - 1;
+        hp.setNextMove(sq);
       }
     }
+    catch(IOException ex)
+    {
+    }
+    return noMoreInput;
   }
 
   public void display()
@@ -111,7 +125,7 @@ public class CliGame
       for(int j = 0; j < size; ++j) {
         int cell = i*size + j;
         char mark = game.markAt(cell);
-        a[i][j] = mark == '-' ? Integer.toString(cell + 1) : Character.toString(mark);
+        a[i][j] = mark == 0 ? Integer.toString(cell + 1) : Character.toString(mark);
       }
     }
     return a;

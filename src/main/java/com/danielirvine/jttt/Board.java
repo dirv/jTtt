@@ -5,9 +5,10 @@ import java.util.stream.*;
 public class Board
 {
   private int size;
-  private Player[] board;
+  private char[] board;
+  private static char unplayed = 0;
 
-  private Board(int size, Player[] board)
+  private Board(int size, char[] board)
   {
     this.size = size;
     this.board = board;
@@ -15,22 +16,20 @@ public class Board
 
   public static Board empty(int size)
   {
-    Player[] board = new Player[size*size];
-    Arrays.fill(board, Player.unplayed);
-    return new Board(size, board);
+    return new Board(size, new char[size*size]);
   }
 
-  public Player markAt(int sq)
+  public char markAt(int sq)
   {
     return board[sq];
   }
 
-  public Board play(int sq)
+  public Board play(int sq, char mark)
   {
-    if (board[sq] == Player.unplayed)
+    if (board[sq] == unplayed)
     {
-      Player[] newBoard = board.clone();
-      newBoard[sq] = getNextPlayer();
+      char[] newBoard = board.clone();
+      newBoard[sq] = mark;
       return new Board(size, newBoard);
     }
 
@@ -39,8 +38,8 @@ public class Board
 
   public boolean isDrawn()
   {
-    for(Player p : board)
-      if (p == Player.unplayed)
+    for(char p : board)
+      if (p == unplayed)
         return false;
 
     return !isWon();
@@ -54,16 +53,21 @@ public class Board
     addDiagonals(combos);
 
     for(List<Integer> combo : combos) {
-      Object[] player = combo.stream()
-        .map((sq) -> board[sq])
-        .distinct()
-        .toArray();
-      if (player.length == 1 && player[0] != Player.unplayed) {
+      long playerCount = getPlayerCount(combo);
+      if (playerCount == 1 && board[combo.get(0)] != unplayed) {
         return true;
       }
     }
 
     return false;
+  }
+
+  private long getPlayerCount(List<Integer> sqs)
+  {
+    return sqs.stream()
+      .map((sq) -> new Character(board[sq]))
+      .distinct()
+      .count();
   }
 
   private void addRows(List<List<Integer>> combos)
@@ -107,32 +111,9 @@ public class Board
     combos.add(rtl);
   }
 
-  public Player getNextPlayer()
-  {
-    Player next = Player.x;
-    for (Player p : board)
-      if (p != Player.unplayed)
-        next = other(next);
-    return next;
-  }
-
-  public Player getLastPlayer()
-  {
-    return other(getNextPlayer());
-  }
-
   public int getSize()
   {
     return size;
   }
 
-  public Player getPlayer(int square)
-  {
-    return board[square];
-  }
-
-  private Player other(Player p)
-  {
-    return p == Player.x ? Player.o : Player.x;
-  }
 }

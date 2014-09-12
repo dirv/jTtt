@@ -4,15 +4,26 @@ import java.io.*;
 public class Game
 {
   private Board board;
+  private final Player x, o;
+  private Player next;
 
   public Game(int size, boolean xHuman, boolean oHuman)
   {
     board = Board.empty(size);
+    x = Player.create(xHuman, 'X');
+    o = Player.create(oHuman, 'O');
+    next = x;
   }
 
-  public void play(int sq)
+  public Player getNextPlayer()
   {
-    board = board.play(sq);
+    return next;
+  }
+
+  public void playNextMove()
+  {
+    board = board.play(next.getNextMove(), next.getMark());
+    next = next == x ? o : x;
   }
 
   public boolean isWon()
@@ -27,12 +38,12 @@ public class Game
 
   public char lastPlayerMark()
   {
-    return board.getLastPlayer().getMark();
+    return otherPlayer(next).getMark();
   }
 
   public char nextPlayerMark()
   {
-    return board.getNextPlayer().getMark();
+    return next.getMark();
   }
 
   public int getSize()
@@ -42,6 +53,11 @@ public class Game
 
   public char markAt(int sq)
   {
-    return board.markAt(sq).getMark();
+    return board.markAt(sq);
+  }
+
+  private Player otherPlayer(Player p)
+  {
+    return p == x ? o : x;
   }
 }

@@ -15,7 +15,7 @@ public class BoardTest
   public void testCanPlayAMove()
   {
     Board b = Board.empty(3);
-    b = b.play(1);
+    b = b.play(1, 'X');
     assertBoardEquals(b, "-X-------");
   }
 
@@ -23,32 +23,17 @@ public class BoardTest
   public void testDoesNotPlayMoveInSquareAlreadyPlayed()
   {
     Board b = Board.empty(3);
-    b = b.play(1);
-    b = b.play(1);
+    b = b.play(1, 'X');
+    b = b.play(1, 'O');
     assertBoardEquals(b, "-X-------");
-  }
-
-  @Test
-  public void testGetNextPlayerReturnsPlayerX()
-  {
-    Board b = Board.empty(3);
-    assertEquals(Player.x, b.getNextPlayer());
-  }
-
-  @Test
-  public void testGetNextPlayerReturnsPlayerO()
-  {
-    Board b = Board.empty(3);
-    b = b.play(1);
-    assertEquals(Player.o, b.getNextPlayer());
   }
 
   @Test
   public void testCanMarkMultipleSquares()
   {
     Board b = Board.empty(3);
-    b = b.play(0);
-    b = b.play(1);
+    b = b.play(0, 'X');
+    b = b.play(1, 'O');
     assertBoardEquals(b, "XO-------");
   }
 
@@ -76,19 +61,15 @@ public class BoardTest
     assertTrue(boardWithSequence(4, 3, 0, 6, 1, 9, 2, 12).isWon());
   }
 
-  @Test
-  public void testCanGetLastPlayer()
-  {
-    Board b = Board.empty(3);
-    b = b.play(0);
-    assertEquals(Player.x, b.getLastPlayer());
-  }
-
   private Board boardWithSequence(int size, int... plays)
   {
+    char nextMark = 'X';
     Board b = Board.empty(size);
-    for(int p : plays)
-      b = b.play(p);
+    for(int p : plays) {
+      b = b.play(p, nextMark);
+      nextMark = nextMark == 'X' ? 'O' : 'X';
+    }
+
     return b;
   }
 
@@ -99,14 +80,14 @@ public class BoardTest
     StringBuilder s = new StringBuilder();
     for(int i = 0; i < length; ++i)
     {
-      Player p = actual.getPlayer(i);
-      if (p == null)
+      char p = actual.markAt(i);
+      if (p == 0)
       {
         s.append("-");
       }
       else
       {
-        s.append(p.getMark());
+        s.append(p);
       }
     }
     assertEquals(expected, s.toString());

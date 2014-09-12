@@ -130,7 +130,7 @@ public class CliGameTest
     String lastBoard = getLastBoardShown(size);
     return lastBoard.length() - lastBoard.replace(c, "").length();
   }
-  
+
   private String getLastBoardShown(int size)
   {
     int numLines = size * 2 + 1;

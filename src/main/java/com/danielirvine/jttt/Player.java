@@ -1,22 +1,25 @@
 package com.danielirvine.jttt;
 
-public class Player
+public abstract class Player
 {
-  public static final Player x = new Player('X');
-  public static final Player o = new Player('O');
-  public static final Player unplayed = new Player('-');
-
   private char mark;
 
-  public Player (char mark)
+  protected Player(char mark)
   {
     this.mark = mark;
+  }
+
+  public static Player create(boolean human, char mark)
+  {
+    return new HumanPlayer(mark);
   }
 
   public char getMark()
   {
     return mark;
   }
+
+  protected abstract int getNextMove();
 
   public String toString()
   {
