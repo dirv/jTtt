@@ -15,7 +15,9 @@ public class Board
 
   public static Board empty(int size)
   {
-    return new Board(size, new Player[size*size]);
+    Player[] board = new Player[size*size];
+    Arrays.fill(board, Player.unplayed);
+    return new Board(size, board);
   }
 
   public Player markAt(int sq)
@@ -25,7 +27,7 @@ public class Board
 
   public Board play(int sq)
   {
-    if (board[sq] == null)
+    if (board[sq] == Player.unplayed)
     {
       Player[] newBoard = board.clone();
       newBoard[sq] = getNextPlayer();
@@ -38,7 +40,7 @@ public class Board
   public boolean isDrawn()
   {
     for(Player p : board)
-      if (p == null)
+      if (p == Player.unplayed)
         return false;
 
     return !isWon();
@@ -56,7 +58,7 @@ public class Board
         .map((sq) -> board[sq])
         .distinct()
         .toArray();
-      if (player.length == 1 && player[0] != null) {
+      if (player.length == 1 && player[0] != Player.unplayed) {
         return true;
       }
     }
@@ -109,7 +111,7 @@ public class Board
   {
     Player next = Player.x;
     for (Player p : board)
-      if (p != null)
+      if (p != Player.unplayed)
         next = other(next);
     return next;
   }
