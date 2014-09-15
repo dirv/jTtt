@@ -42,6 +42,21 @@ public class Board
     return board.indexOf(unplayed) == -1 && !isWon();
   }
 
+  public String asString()
+  {
+    return board;
+  }
+
+  private boolean isPlayed(int sq)
+  {
+    return markAt(sq) != unplayed;
+  }
+
+  private String replace(int sq, char newMark)
+  {
+    return board.substring(0, sq) + newMark + board.substring(sq + 1);
+  }
+
   public boolean isWon()
   {
     Stream<IntStream> allCombos = concat(rows(), concat(columns(), diagonals()));
@@ -50,11 +65,6 @@ public class Board
       .filter(this::isWinningCombo)
       .findAny()
       .isPresent();
-  }
-
-  public String asString()
-  {
-    return board;
   }
 
   private boolean isWinningCombo(IntStream combo)
@@ -68,16 +78,6 @@ public class Board
         return result;
       })
     .getAsInt() != unplayed;
-  }
-
-  private boolean isPlayed(int sq)
-  {
-    return markAt(sq) != unplayed;
-  }
-
-  private String replace(int sq, char newMark)
-  {
-    return board.substring(0, sq) + newMark + board.substring(sq + 1);
   }
 
   private Stream<IntStream> rows()
