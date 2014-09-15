@@ -67,6 +67,11 @@ public class Board
     return false;
   }
 
+  public String asString()
+  {
+    return new String(board);
+  }
+
   private long getPlayerCount(List<Integer> sqs)
   {
     return sqs.stream()

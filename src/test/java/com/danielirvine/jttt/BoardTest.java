@@ -75,21 +75,6 @@ public class BoardTest
 
   private void assertBoardEquals(Board actual, String expected)
   {
-    int length = actual.getSize() * actual.getSize();
-    assertEquals(expected.length(), length);
-    StringBuilder s = new StringBuilder();
-    for(int i = 0; i < length; ++i)
-    {
-      char p = actual.markAt(i);
-      if (p == 0)
-      {
-        s.append("-");
-      }
-      else
-      {
-        s.append(p);
-      }
-    }
-    assertEquals(expected, s.toString());
+    assertEquals(expected, actual.asString());
   }
 }
