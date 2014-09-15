@@ -2,6 +2,8 @@ package com.danielirvine.jttt;
 import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
+import static java.util.stream.Collectors.*;
+import static java.util.stream.Stream.*;
 
 public class Board
 {
@@ -27,12 +29,7 @@ public class Board
 
   public Board play(int sq, char mark)
   {
-    if (!isPlayed(sq))
-    {
-      return new Board(size, replace(sq, mark));
-    }
-
-    return this;
+    return isPlayed(sq) ? this : new Board(size, replace(sq, mark));
   }
 
   public int getSize()
@@ -47,24 +44,30 @@ public class Board
 
   public boolean isWon()
   {
-    List<List<Integer>> combos = new ArrayList<List<Integer>>();
-    addRows(combos);
-    addColumns(combos);
-    addDiagonals(combos);
+    Stream<IntStream> allCombos = concat(rows(), concat(columns(), diagonals()));
 
-    for(List<Integer> combo : combos) {
-      long playerCount = getPlayerCount(combo);
-      if (playerCount == 1 && isPlayed(combo.get(0))) {
-        return true;
-      }
-    }
-
-    return false;
+    return allCombos
+      .filter(this::isWinningCombo)
+      .findAny()
+      .isPresent();
   }
 
   public String asString()
   {
     return board;
+  }
+
+  private boolean isWinningCombo(IntStream combo)
+  {
+    return combo
+      .map(this::markAt)
+      .reduce((result, sq) -> {
+        if (sq != result) {
+          result = unplayed;
+        }
+        return result;
+      })
+    .getAsInt() != unplayed;
   }
 
   private boolean isPlayed(int sq)
@@ -77,53 +80,32 @@ public class Board
     return board.substring(0, sq) + newMark + board.substring(sq + 1);
   }
 
-  private long getPlayerCount(List<Integer> sqs)
+  private Stream<IntStream> rows()
   {
-    return sqs.stream()
-      .map((sq) -> new Character(board.charAt(sq)))
-      .distinct()
-      .count();
+    return IntStream
+      .range(0, size)
+      .map(i -> i * size)
+      .mapToObj(start -> IntStream.range(start, start + size));
   }
 
-  private void addRows(List<List<Integer>> combos)
+  private Stream<IntStream> columns()
   {
-    for(int i = 0; i < size; ++i)
-    {
-      int start = i * size;
-      combos.add(IntStream.range(start, start + size).boxed().collect(Collectors.toList()));
-    }
+    return IntStream
+      .range(0, size)
+      .mapToObj(i -> IntStream.iterate(i, j -> j + size)
+      .limit(size));
   }
 
-  private void addColumns(List<List<Integer>> combos)
+  private Stream<IntStream> diagonals()
   {
-    int max = size*size;
-    for (int i = 0; i < size; ++i)
-    {
-      List<Integer> combo = new ArrayList<Integer>();
-      for (int j = i; j < max; j += size)
-      {
-        combo.add(j);
-      }
-      combos.add(combo);
-    }
+    IntStream ltr = IntStream
+      .iterate(0, i -> i + size + 1)
+      .limit(size);
+
+    IntStream rtl = IntStream
+      .iterate(size - 1, i -> i + size - 1)
+      .limit(size);
+
+    return of(ltr, rtl);
   }
-
-  private void addDiagonals(List<List<Integer>> combos)
-  {
-    int max = size*size;
-    List<Integer> ltr = new ArrayList<Integer>();
-    for(int i = 0; i < max; i += size + 1)
-    {
-      ltr.add(i);
-    }
-    combos.add(ltr);
-
-    List<Integer> rtl = new ArrayList<Integer>();
-    for(int i = size - 1; i < max - 1; i += size - 1)
-    {
-      rtl.add(i);
-    }
-    combos.add(rtl);
-  }
-
 }
