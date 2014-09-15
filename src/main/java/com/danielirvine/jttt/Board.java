@@ -36,6 +36,11 @@ public class Board
     return this;
   }
 
+  public int getSize()
+  {
+    return size;
+  }
+
   public boolean isDrawn()
   {
     for(char p : board)
@@ -109,11 +114,6 @@ public class Board
       rtl.add(i);
     }
     combos.add(rtl);
-  }
-
-  public int getSize()
-  {
-    return size;
   }
 
 }

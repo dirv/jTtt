@@ -13,7 +13,7 @@ public class CliGameTest
   private CliGame g;
 
   @Test
-  public void testDrawsAnEmptyBoard()
+  public void drawsAnEmptyBoard()
   {
     create3x3HumanHumanGame();
     g.playAll();
@@ -22,7 +22,7 @@ public class CliGameTest
   }
 
   @Test
-  public void testDrawsAnInPlayBoard()
+  public void drawsAnInPlayBoard()
   {
     create3x3HumanHumanGame(1, 4, 7, 5, 3);
     g.playAll();
@@ -31,7 +31,7 @@ public class CliGameTest
   }
 
   @Test
-  public void testDrawsAFourByFourBoard()
+  public void drawsAFourByFourBoard()
   {
     create4x4Game(1, 16, 2, 15);
     g.playAll();
@@ -40,7 +40,7 @@ public class CliGameTest
   }
 
   @Test
-  public void testShowsWinningMessageWhenWon()
+  public void showsWinningMessageWhenWon()
   {
     create3x3HumanHumanGame(1, 4, 2, 5, 3);
     g.playAll();
@@ -48,7 +48,7 @@ public class CliGameTest
   }
 
   @Test
-  public void testShowsDrawnMessageWhenDrawn()
+  public void showsDrawnMessageWhenDrawn()
   {
     create3x3HumanHumanGame(1, 4, 2, 5, 6, 3, 7, 8, 9);
     g.playAll();
@@ -56,7 +56,7 @@ public class CliGameTest
   }
 
   @Test
-  public void testShowsPlayMessageWhenNotFinished()
+  public void showsPlayMessageWhenNotFinished()
   {
     create3x3HumanHumanGame();
     g.playAll();
@@ -64,7 +64,7 @@ public class CliGameTest
   }
 
   @Test
-  public void testPlaysGameUntilWin()
+  public void playsGameUntilWin()
   {
     create3x3HumanHumanGame(1, 4, 2, 5, 3);
     g.playAll();
@@ -72,7 +72,7 @@ public class CliGameTest
   }
 
   @Test
-  public void testDisplaysInitialBoard()
+  public void displaysInitialBoard()
   {
     create3x3HumanHumanGame();
     g.playAll();
@@ -80,7 +80,7 @@ public class CliGameTest
   }
 
   @Test
-  public void testCanPlayComputerPlayer()
+  public void canPlayComputerPlayer()
   {
     create3x3HumanComputerGame();
   }

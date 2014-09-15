@@ -10,14 +10,20 @@ public class GameTest
 
 
   @Test
-  public void testPlaysAHumanMove()
+  public void playsAHumanMove()
   {
     g = new Game(3, true, true);
-    ((HumanPlayer)g.getNextPlayer()).setNextMove(5);
+    humanPlayer().setNextMove(5);
     g.playNextMove();
     assertEquals('X', g.markAt(5));
   }
 
+  @Test
+  public void playsAComputerMove()
+  {
+    g = new Game(3, true, false);
+
+  }
 
   private HumanPlayer humanPlayer()
   {

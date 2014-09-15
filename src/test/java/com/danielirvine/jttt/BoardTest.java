@@ -5,14 +5,14 @@ import static org.junit.Assert.*;
 public class BoardTest
 {
   @Test
-  public void testCreatesANewBoardOfSizeThree()
+  public void createsANewBoardOfSizeThree()
   {
     Board b = Board.empty(3);
     assertBoardEquals(b, "---------");
   }
 
   @Test
-  public void testCanPlayAMove()
+  public void canPlayAMove()
   {
     Board b = Board.empty(3);
     b = b.play(1, 'X');
@@ -20,7 +20,7 @@ public class BoardTest
   }
 
   @Test
-  public void testDoesNotPlayMoveInSquareAlreadyPlayed()
+  public void doesNotPlayMoveInSquareAlreadyPlayed()
   {
     Board b = Board.empty(3);
     b = b.play(1, 'X');
@@ -29,7 +29,7 @@ public class BoardTest
   }
 
   @Test
-  public void testCanMarkMultipleSquares()
+  public void canMarkMultipleSquares()
   {
     Board b = Board.empty(3);
     b = b.play(0, 'X');
@@ -38,25 +38,25 @@ public class BoardTest
   }
 
   @Test
-  public void testCanWinWithRow()
+  public void canWinWithRow()
   {
     assertTrue(boardWithSequence(3, 0, 4, 1, 5, 2).isWon());
   }
 
   @Test
-  public void testCanWinWithColumn()
+  public void canWinWithColumn()
   {
     assertTrue(boardWithSequence(3, 1, 3, 4, 5, 7).isWon());
   }
 
   @Test
-  public void testCanWinWithDiagonal()
+  public void canWinWithDiagonal()
   {
     assertTrue(boardWithSequence(3, 0, 3, 4, 5, 8).isWon());
   }
 
   @Test
-  public void testCanWithWithDiagonal4x4()
+  public void canWithWithDiagonal4x4()
   {
     assertTrue(boardWithSequence(4, 3, 0, 6, 1, 9, 2, 12).isWon());
   }

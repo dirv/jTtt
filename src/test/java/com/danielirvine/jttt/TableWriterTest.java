@@ -10,7 +10,7 @@ public class TableWriterTest
   private String[] result;
 
   @Test
-  public void testSingleSquareTableHeader()
+  public void singleSquareTableHeader()
   {
     print(new String[][] { { "test" } });
     assertEquals(3, result.length);
@@ -18,14 +18,14 @@ public class TableWriterTest
   }
 
   @Test
-  public void testSingleSquareTableContent()
+  public void singleSquareTableContent()
   {
     print(new String[][] { { "test" } });
     assertThat(result[1], containsString("test"));
   }
 
   @Test
-  public void testDoubleSquareTableContent()
+  public void doubleSquareTableContent()
   {
     print(new String[][] { { "hello", "hi" } });
     assertThat(result[1], containsString("hello"));
@@ -33,7 +33,7 @@ public class TableWriterTest
   }
 
   @Test
-  public void testDoubleRowTableShowsDividingLine()
+  public void doubleRowTableShowsDividingLine()
   {
     print(new String[][] { { "hello" }, { "hi" } });
     assertEquals(5, result.length);
@@ -42,7 +42,7 @@ public class TableWriterTest
   }
 
   @Test
-  public void testCellAlignment()
+  public void cellAlignment()
   {
     print(new String[][] { { "hello" }, { "hi" } });
     assertThat(result[1], containsString(" hello "));
