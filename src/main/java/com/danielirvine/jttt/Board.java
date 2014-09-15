@@ -1,14 +1,15 @@
 package com.danielirvine.jttt;
+import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
 
 public class Board
 {
   private int size;
-  private char[] board;
+  private String board;
   private static char unplayed = 0;
 
-  private Board(int size, char[] board)
+  private Board(int size, String board)
   {
     this.size = size;
     this.board = board;
@@ -16,21 +17,19 @@ public class Board
 
   public static Board empty(int size)
   {
-    return new Board(size, new char[size*size]);
+    return new Board(size, CharBuffer.allocate(size*size).toString());
   }
 
   public char markAt(int sq)
   {
-    return board[sq];
+    return board.charAt(sq);
   }
 
   public Board play(int sq, char mark)
   {
-    if (board[sq] == unplayed)
+    if (!isPlayed(sq))
     {
-      char[] newBoard = board.clone();
-      newBoard[sq] = mark;
-      return new Board(size, newBoard);
+      return new Board(size, replace(sq, mark));
     }
 
     return this;
@@ -43,11 +42,7 @@ public class Board
 
   public boolean isDrawn()
   {
-    for(char p : board)
-      if (p == unplayed)
-        return false;
-
-    return !isWon();
+    return board.indexOf(unplayed) == -1 && !isWon();
   }
 
   public boolean isWon()
@@ -59,7 +54,7 @@ public class Board
 
     for(List<Integer> combo : combos) {
       long playerCount = getPlayerCount(combo);
-      if (playerCount == 1 && board[combo.get(0)] != unplayed) {
+      if (playerCount == 1 && isPlayed(combo.get(0))) {
         return true;
       }
     }
@@ -69,13 +64,23 @@ public class Board
 
   public String asString()
   {
-    return new String(board);
+    return board;
+  }
+
+  private boolean isPlayed(int sq)
+  {
+    return markAt(sq) != unplayed;
+  }
+
+  private String replace(int sq, char newMark)
+  {
+    return board.substring(0, sq) + newMark + board.substring(sq + 1);
   }
 
   private long getPlayerCount(List<Integer> sqs)
   {
     return sqs.stream()
-      .map((sq) -> new Character(board[sq]))
+      .map((sq) -> new Character(board.charAt(sq)))
       .distinct()
       .count();
   }
