@@ -56,7 +56,7 @@ public class BoardTest
   }
 
   @Test
-  public void canWithWithDiagonal4x4()
+  public void canWinWithDiagonal4x4()
   {
     assertTrue(boardWithSequence(4, 3, 0, 6, 1, 9, 2, 12).isWon());
   }
