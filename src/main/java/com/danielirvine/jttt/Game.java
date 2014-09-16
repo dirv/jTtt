@@ -5,25 +5,33 @@ public class Game
 {
   private Board board;
   private final Player x, o;
-  private Player next;
 
-  public Game(int size, boolean xHuman, boolean oHuman)
+  public Game(Board board, Player x, Player o)
   {
-    board = Board.empty(size);
-    x = Player.create(xHuman, 'X');
-    o = Player.create(oHuman, 'O');
-    next = x;
+    this.board = board;
+    this.x = x;
+    this.o = x;
+  }
+
+  public Game(int size, Player x, Player o)
+  {
+    this(Board.empty(size), x, o);
   }
 
   public Player getNextPlayer()
   {
-    return next;
+    return board.getNextPlayerMark() == 'X' ? x : o;
+  }
+
+  public Player getLastPlayer()
+  {
+    return board.getNextPlayerMark() == 'X' ? o : x;
   }
 
   public void playNextMove()
   {
+    Player next = getNextPlayer();
     board = board.play(next.getNextMove(), next.getMark());
-    next = next == x ? o : x;
   }
 
   public boolean isWon()
@@ -36,16 +44,6 @@ public class Game
     return board.isDrawn();
   }
 
-  public char lastPlayerMark()
-  {
-    return otherPlayer(next).getMark();
-  }
-
-  public char nextPlayerMark()
-  {
-    return next.getMark();
-  }
-
   public int getSize()
   {
     return board.getSize();
@@ -54,10 +52,5 @@ public class Game
   public char markAt(int sq)
   {
     return board.markAt(sq);
-  }
-
-  private Player otherPlayer(Player p)
-  {
-    return p == x ? o : x;
   }
 }

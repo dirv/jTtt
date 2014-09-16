@@ -2,20 +2,16 @@ package com.danielirvine.jttt;
 
 public class HumanPlayer extends Player
 {
-  private int nextMove;
+  private final MoveProvider moveProvider;
 
-  public HumanPlayer(char mark)
+  public HumanPlayer(MoveProvider moveProvider, char mark)
   {
     super(mark);
-  }
-
-  public void setNextMove(int sq)
-  {
-    nextMove = sq;
+    this.moveProvider = moveProvider;
   }
 
   public int getNextMove()
   {
-    return nextMove;
+    return moveProvider.getMove();
   }
 }

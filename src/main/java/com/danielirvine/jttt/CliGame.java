@@ -22,89 +22,35 @@ public class CliGame
 
   public void playNextMove()
   {
-    Player next = game.getNextPlayer();
-
-    if(next instanceof HumanPlayer) {
-      setNextHumanMove((HumanPlayer)next);
-    }
-
     game.playNextMove();
     display();
-  }
-
-  public boolean isFinished()
-  {
-    return game.isDrawn() || game.isWon();
-  }
-
-  private void setNextHumanMove(HumanPlayer hp)
-  {
-    try {
-      String read = in.readLine();
-      int sq = Integer.parseInt(read.trim()) - 1;
-      hp.setNextMove(sq);
-    }
-    catch(IOException ex)
-    {
-    }
   }
 
   public void display()
   {
     displayBoard();
     if (game.isWon()) {
-      out.print(game.lastPlayerMark());
-      out.println(" wins!");
+      out.printf("%s wins!\n", game.getLastPlayer().getMark());
     }
     else if (game.isDrawn()) {
       out.println("It's a draw!");
-    }
-    else {
-      out.print(game.nextPlayerMark());
-      out.println("'s go. Please enter a square 1-9:");
     }
     out.flush();
   }
 
   private Game createGame()
   {
-    boolean validSize = false;
-    int size = 3;
-    while(!validSize)
-    {
-      try {
-        out.println("What size of board would you like to play? Choose 3 or 4.");
-        out.flush();
-        size = Integer.parseInt(in.readLine().trim());
-        if (size == 3 || size == 4)
-        {
-          validSize = true;
-        }
-      }
-      catch(IOException ex)
-      {
-      }
-    }
-    return new Game(size, getIsHuman("X"), getIsHuman("O"));
+    CliMoveProvider moveProvider = new CliMoveProvider(out, in);
+    return new Game(
+        moveProvider.getSize(),
+        createPlayer(moveProvider.getIsHuman("X")),
+        createPlayer(moveProvider.getIsHuman("O")));
   }
 
-  private boolean getIsHuman(String mark)
+  private Player createPlayer(String mark, CliMoveProvider moveProvider)
   {
-    boolean validBoolean = false;
-    String human = null;
-    while(!validBoolean)
-    {
-      try {
-        out.println("Is player " + mark + " human? Choose y or n.");
-        out.flush();
-        human = in.readLine().trim();
-        validBoolean = human.equals("y") || human.equals("n");
-      }
-      catch(IOException ex)
-      {
-      }
-    }
-    return human == "y";
+    boolean isHuamn = moveProvider.getIsHuman(mark);
+    return isHuman ? new HumanPlayer(moveProvider, mark) : null;
   }
 
   private void displayBoard()
