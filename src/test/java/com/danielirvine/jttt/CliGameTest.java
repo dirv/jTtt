@@ -16,7 +16,7 @@ public class CliGameTest
   public void drawsAnEmptyBoard()
   {
     create3x3HumanHumanGame();
-    g.playAll();
+    playNextMove();
     assertEquals(0, occurrencesInTable("X"));
     assertEquals(0, occurrencesInTable("O"));
   }
@@ -25,7 +25,7 @@ public class CliGameTest
   public void drawsAnInPlayBoard()
   {
     create3x3HumanHumanGame(1, 4, 7, 5, 3);
-    g.playAll();
+    playNextMove();
     assertEquals(2, occurrencesInTable("O"));
     assertEquals(3, occurrencesInTable("X"));
   }
@@ -34,7 +34,7 @@ public class CliGameTest
   public void drawsAFourByFourBoard()
   {
     create4x4Game(1, 16, 2, 15);
-    g.playAll();
+    playNextMove();
     assertEquals(2, occurrencesInTable("X", 4));
     assertEquals(2, occurrencesInTable("O", 4));
   }
@@ -43,7 +43,7 @@ public class CliGameTest
   public void showsWinningMessageWhenWon()
   {
     create3x3HumanHumanGame(1, 4, 2, 5, 3);
-    g.playAll();
+    playNextMove();
     assertThat(output.toString(), containsString("X wins!"));
   }
 
@@ -51,7 +51,7 @@ public class CliGameTest
   public void showsDrawnMessageWhenDrawn()
   {
     create3x3HumanHumanGame(1, 4, 2, 5, 6, 3, 7, 8, 9);
-    g.playAll();
+    playNextMove();
     assertThat(output.toString(), containsString("It's a draw!"));
   }
 
@@ -59,7 +59,7 @@ public class CliGameTest
   public void showsPlayMessageWhenNotFinished()
   {
     create3x3HumanHumanGame();
-    g.playAll();
+    playNextMove();
     assertThat(output.toString(), containsString("Please enter a square"));
   }
 
@@ -67,7 +67,7 @@ public class CliGameTest
   public void playsGameUntilWin()
   {
     create3x3HumanHumanGame(1, 4, 2, 5, 3);
-    g.playAll();
+    playNextMove();
     assertThat(output.toString(), containsString("X wins!"));
   }
 
@@ -75,7 +75,7 @@ public class CliGameTest
   public void displaysInitialBoard()
   {
     create3x3HumanHumanGame();
-    g.playAll();
+    playNextMove();
     assertThat(output.toString(), containsString("9"));
   }
 
@@ -141,5 +141,10 @@ public class CliGameTest
       board += lines[i];
     }
     return board;
+  }
+
+  private void playNextMove()
+  {
+    g.playNextMove();
   }
 }

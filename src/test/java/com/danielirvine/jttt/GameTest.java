@@ -8,7 +8,6 @@ public class GameTest
 {
   private Game g;
 
-
   @Test
   public void playsAHumanMove()
   {

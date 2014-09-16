@@ -7,50 +7,46 @@ public class CliGame
   private final BufferedReader in;
   private Game game;
 
-  public CliGame(OutputStream out, InputStream in)
+  public CliGame(OutputStream out, InputStream in, Game game)
   {
     this.out = new PrintWriter(out);
     this.in = new BufferedReader(new InputStreamReader(in));
-    createGame();
-  }
-
-  public void playAll()
-  {
+    this.game = game;
     display();
-    boolean finished = false;
-    while(!finished) {
-      Player next = game.getNextPlayer();
-
-      if(next instanceof HumanPlayer) {
-        finished = setNextHumanMove((HumanPlayer)next);
-      }
-      if (!finished) {
-        game.playNextMove();
-        finished = game.isDrawn() || game.isWon();
-        display();
-      }
-    }
   }
 
-  private boolean setNextHumanMove(HumanPlayer hp)
+  public CliGame(OutputStream out, InputStream in)
   {
-    boolean noMoreInput = false;
+    this(out, in, createGame());
+  }
+
+  public void playNextMove()
+  {
+    Player next = game.getNextPlayer();
+
+    if(next instanceof HumanPlayer) {
+      setNextHumanMove((HumanPlayer)next);
+    }
+
+    game.playNextMove();
+    display();
+  }
+
+  public boolean isFinished()
+  {
+    return game.isDrawn() || game.isWon();
+  }
+
+  private void setNextHumanMove(HumanPlayer hp)
+  {
     try {
       String read = in.readLine();
-      if(read == null)
-      {
-        noMoreInput = true;
-      }
-      else
-      {
-        int sq = Integer.parseInt(read.trim()) - 1;
-        hp.setNextMove(sq);
-      }
+      int sq = Integer.parseInt(read.trim()) - 1;
+      hp.setNextMove(sq);
     }
     catch(IOException ex)
     {
     }
-    return noMoreInput;
   }
 
   public void display()
@@ -70,7 +66,7 @@ public class CliGame
     out.flush();
   }
 
-  private void createGame()
+  private Game createGame()
   {
     boolean validSize = false;
     int size = 3;
@@ -89,7 +85,7 @@ public class CliGame
       {
       }
     }
-    game = new Game(size, getIsHuman("X"), getIsHuman("O"));
+    return new Game(size, getIsHuman("X"), getIsHuman("O"));
   }
 
   private boolean getIsHuman(String mark)

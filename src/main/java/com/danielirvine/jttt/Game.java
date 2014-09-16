@@ -15,7 +15,6 @@ public class Game
     next = x;
   }
 
-
   public Player getNextPlayer()
   {
     return next;
