@@ -10,22 +10,29 @@ public class CliGameTest
 {
   private OutputStream output = new ByteArrayOutputStream();
   private InputStream input = new ByteArrayInputStream(new byte[0]);
+  private FakeMoveProvider moveProvider = new FakeMoveProvider();
   private CliGame g;
 
   @Test
   public void drawsAnEmptyBoard()
   {
-    create3x3HumanHumanGame();
-    playNextMove();
+    createStartGame(3);
     assertEquals(0, occurrencesInTable("X"));
     assertEquals(0, occurrencesInTable("O"));
   }
 
   @Test
+  public void displaysInitialBoard()
+  {
+    createStartGame(3);
+    assertThat(output.toString(), containsString("9"));
+  }
+
+  @Test
   public void drawsAnInPlayBoard()
   {
-    create3x3HumanHumanGame(1, 4, 7, 5, 3);
-    playNextMove();
+    createGame(3, "--X-OO-X-");
+    playNextMove(1);
     assertEquals(2, occurrencesInTable("O"));
     assertEquals(3, occurrencesInTable("X"));
   }
@@ -33,85 +40,56 @@ public class CliGameTest
   @Test
   public void drawsAFourByFourBoard()
   {
-    create4x4Game(1, 16, 2, 15);
-    playNextMove();
-    assertEquals(2, occurrencesInTable("X", 4));
-    assertEquals(2, occurrencesInTable("O", 4));
+    createStartGame(4);
+    assertThat(output.toString(), containsString("16"));
   }
 
   @Test
   public void showsWinningMessageWhenWon()
   {
-    create3x3HumanHumanGame(1, 4, 2, 5, 3);
-    playNextMove();
+    createGame(3, "XX-OO----");
+    playNextMove(3);
     assertThat(output.toString(), containsString("X wins!"));
   }
 
   @Test
   public void showsDrawnMessageWhenDrawn()
   {
-    create3x3HumanHumanGame(1, 4, 2, 5, 6, 3, 7, 8, 9);
-    playNextMove();
+    createGame(3, "XXOOOXXO-");
+    playNextMove(9);
     assertThat(output.toString(), containsString("It's a draw!"));
-  }
-
-  @Test
-  public void showsPlayMessageWhenNotFinished()
-  {
-    create3x3HumanHumanGame();
-    playNextMove();
-    assertThat(output.toString(), containsString("Please enter a square"));
   }
 
   @Test
   public void playsGameUntilWin()
   {
-    create3x3HumanHumanGame(1, 4, 2, 5, 3);
-    playNextMove();
+    moveProvider = new FakeMoveProvider(1, 4, 2, 5, 3);
+    createGame(3, "---------");
+    g.playAll();
     assertThat(output.toString(), containsString("X wins!"));
   }
 
-  @Test
-  public void displaysInitialBoard()
+  private void createGame(Integer size, String state)
   {
-    create3x3HumanHumanGame();
-    playNextMove();
-    assertThat(output.toString(), containsString("9"));
+    Board b = new Board(size, state);
+    Game game = new Game(moveProvider, b, true, true);
+    g = new CliGame(game, new PrintWriter(output, true));
   }
 
-  @Test
-  public void canPlayComputerPlayer()
-  {
-    create3x3HumanComputerGame();
-  }
-
-  private void create3x3HumanHumanGame(Integer... plays)
-  {
-    createGame(3, true, true, plays);
-  }
-
-  private void create3x3HumanComputerGame(Integer... plays)
-  {
-    createGame(3, true, false, plays);
-  }
-
-  private void create4x4Game(Integer... plays)
-  {
-    createGame(4, true, true, plays);
-  }
-
-  private void createGame(Integer size, boolean xHuman, boolean oHuman, Integer... plays)
+  private void createStartGame(Integer size)
   {
     StringBuilder inputSequence = new StringBuilder();
     appendLine(inputSequence, size.toString());
-    appendLine(inputSequence, xHuman ? "y" : "n");
-    appendLine(inputSequence, oHuman ? "y" : "n");
-
-    for(Integer p : plays)
-      appendLine(inputSequence, p.toString());
-
+    appendLine(inputSequence, "y");
+    appendLine(inputSequence, "y");
     input = new ByteArrayInputStream(inputSequence.toString().getBytes());
     g = new CliGame(output, input);
+  }
+
+  private void playNextMove(int sq)
+  {
+    moveProvider.setNextMove(sq);
+    g.playNextMove();
   }
 
   private void appendLine(StringBuilder sb, String text)
@@ -127,24 +105,8 @@ public class CliGameTest
 
   private int occurrencesInTable(String c, int size)
   {
-    String lastBoard = getLastBoardShown(size);
+    int startOfTable = output.toString().indexOf("/");
+    String lastBoard = output.toString().substring(startOfTable);
     return lastBoard.length() - lastBoard.replace(c, "").length();
-  }
-
-  private String getLastBoardShown(int size)
-  {
-    int numLines = size * 2 + 1;
-    String board = "";
-    String[] lines = output.toString().split(System.lineSeparator());
-    int startLine = lines.length - numLines - 1;
-    for(int i = startLine; i < startLine + numLines; ++i) {
-      board += lines[i];
-    }
-    return board;
-  }
-
-  private void playNextMove()
-  {
-    g.playNextMove();
   }
 }

@@ -9,11 +9,6 @@ public abstract class Player
     this.mark = mark;
   }
 
-  public static Player create(boolean human, char mark)
-  {
-    return new HumanPlayer(mark);
-  }
-
   public char getMark()
   {
     return mark;

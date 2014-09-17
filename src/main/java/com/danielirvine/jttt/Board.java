@@ -9,9 +9,9 @@ public class Board
 {
   private int size;
   private String board;
-  private static char unplayed = 0;
+  public static char unplayed = '-';
 
-  private Board(int size, String board)
+  Board(int size, String board)
   {
     this.size = size;
     this.board = board;
@@ -19,7 +19,9 @@ public class Board
 
   public static Board empty(int size)
   {
-    return new Board(size, CharBuffer.allocate(size*size).toString());
+    char[] array = new char[size*size];
+    Arrays.fill(array, unplayed);
+    return new Board(size, new String(array));
   }
 
   public char markAt(int sq)
@@ -42,9 +44,24 @@ public class Board
     return board.indexOf(unplayed) == -1 && !isWon();
   }
 
+  public boolean isWon()
+  {
+    Stream<IntStream> allCombos = concat(rows(), concat(columns(), diagonals()));
+
+    return allCombos
+      .filter(this::isWinningCombo)
+      .findAny()
+      .isPresent();
+  }
+
   public String asString()
   {
     return board;
+  }
+
+  public int getNumPlayedSquares()
+  {
+    return board.replace(new Character(unplayed).toString(), "").length();
   }
 
   private boolean isPlayed(int sq)
@@ -55,16 +72,6 @@ public class Board
   private String replace(int sq, char newMark)
   {
     return board.substring(0, sq) + newMark + board.substring(sq + 1);
-  }
-
-  public boolean isWon()
-  {
-    Stream<IntStream> allCombos = concat(rows(), concat(columns(), diagonals()));
-
-    return allCombos
-      .filter(this::isWinningCombo)
-      .findAny()
-      .isPresent();
   }
 
   private boolean isWinningCombo(IntStream combo)

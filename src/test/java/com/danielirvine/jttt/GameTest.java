@@ -11,16 +11,17 @@ public class GameTest
   @Test
   public void playsAHumanMove()
   {
-    g = new Game(3, true, true);
-    humanPlayer().setNextMove(5);
+    FakeMoveProvider moveProvider = new FakeMoveProvider(5);
+    g = new Game(moveProvider, 3, true, true);
     g.playNextMove();
-    assertEquals('X', g.markAt(5));
+    assertEquals('X', g.markAt(4));
   }
 
   @Test
   public void playsAComputerMove()
   {
-    g = new Game(3, true, false);
+    FakeMoveProvider moveProvider = new FakeMoveProvider(5);
+    g = new Game(moveProvider, 3, true, false);
 
   }
 

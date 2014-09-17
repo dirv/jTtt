@@ -1,23 +1,37 @@
 package com.danielirvine.jttt;
 import java.io.*;
+import java.util.stream.*;
+import java.util.*;
+import static java.util.stream.Collectors.*;
 
 public class CliGame
 {
-  private final PrintWriter out;
-  private final BufferedReader in;
+  private final PrintWriter writer;
   private Game game;
-
-  public CliGame(OutputStream out, InputStream in, Game game)
-  {
-    this.out = new PrintWriter(out);
-    this.in = new BufferedReader(new InputStreamReader(in));
-    this.game = game;
-    display();
-  }
 
   public CliGame(OutputStream out, InputStream in)
   {
-    this(out, in, createGame());
+    this.writer = new PrintWriter(out, true);
+    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+    CliOperations cliOperations = new CliOperations(writer, reader);
+    this.game = new Game(cliOperations,
+        cliOperations.getSize(),
+        cliOperations.getIsHuman('X'),
+        cliOperations.getIsHuman('O'));
+    display();
+  }
+
+  public CliGame(Game game, PrintWriter writer)
+  {
+    this.writer = writer;
+    this.game = game;
+  }
+
+  public void playAll()
+  {
+    while(!game.isFinished()) {
+      playNextMove();
+    }
   }
 
   public void playNextMove()
@@ -26,51 +40,37 @@ public class CliGame
     display();
   }
 
-  public void display()
+  private void display()
   {
     displayBoard();
+    displayResult();
+  }
+
+  private void displayResult()
+  {
     if (game.isWon()) {
-      out.printf("%s wins!\n", game.getLastPlayer().getMark());
+      writer.printf("%s wins!\n", game.getLastPlayer().getMark());
     }
     else if (game.isDrawn()) {
-      out.println("It's a draw!");
+      writer.printf("It's a draw!\n");
     }
-    out.flush();
-  }
-
-  private Game createGame()
-  {
-    CliMoveProvider moveProvider = new CliMoveProvider(out, in);
-    return new Game(
-        moveProvider.getSize(),
-        createPlayer(moveProvider.getIsHuman("X")),
-        createPlayer(moveProvider.getIsHuman("O")));
-  }
-
-  private Player createPlayer(String mark, CliMoveProvider moveProvider)
-  {
-    boolean isHuamn = moveProvider.getIsHuman(mark);
-    return isHuman ? new HumanPlayer(moveProvider, mark) : null;
   }
 
   private void displayBoard()
   {
-    new TableWriter(out).print(boardToArray());
+    new TableWriter(writer).print(boardStrings(), game.getSize());
   }
 
-  private String[][] boardToArray()
+  private List<String> boardStrings()
   {
-    int size = game.getSize();
-    String[][] a = new String[size][];
-    for(int i = 0; i < size; ++i) {
-      a[i] = new String[size];
-      for(int j = 0; j < size; ++j) {
-        int cell = i*size + j;
-        char mark = game.markAt(cell);
-        a[i][j] = mark == 0 ? Integer.toString(cell + 1) : Character.toString(mark);
-      }
-    }
-    return a;
+    int length = game.getSize() * game.getSize();
+    return IntStream.range(0, length).mapToObj(this::cellDisplay).collect(toList());
+  }
+
+  private String cellDisplay(int sq)
+  {
+    char mark = game.markAt(sq);
+    return mark == Board.unplayed ? Integer.toString(sq + 1) : Character.toString(mark);
   }
 }
 

@@ -9,4 +9,5 @@ define 'jTtt' do
   package :jar, :id => 'jTtt'
   compile.options.target = '1.8'
   compile.options.source = '1.8'
+  manifest['Main-Class'] = 'com.danielirvine.jttt.App'
 end

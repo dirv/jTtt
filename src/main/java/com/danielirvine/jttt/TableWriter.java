@@ -1,5 +1,8 @@
 package com.danielirvine.jttt;
 import java.io.*;
+import java.util.stream.*;
+import java.util.*;
+import static java.util.stream.Stream.*;
 
 public class TableWriter
 {
@@ -21,53 +24,30 @@ public class TableWriter
     this.out = out;
   }
 
-  public void print(Object[][] table)
+  public void print(List<String> strings, int size)
   {
-    String[][] tableStrings = new String[table.length][];
-    int rows = table.length;
-    int cols = table[0].length;
-    int cellWidth = 0;
-    for(int i = 0; i < rows; ++i)
-    {
-      String[] row = new String[cols];
-      for(int j = 0; j < cols; ++j)
-      {
-        String cell = table[i][j].toString();
-        if( cellWidth < cell.length() )
-        {
-          cellWidth = cell.length();
-        }
-        row[j] = cell;
-      }
-      tableStrings[i] = row;
-    }
+    int cellWidth = strings.stream().mapToInt(String::length).max().getAsInt();
 
-    printHeader(cellWidth, cols);
-    for(int i = 0; i < rows - 1; ++i)
-    {
-      printRow(tableStrings[i], cellWidth);
-      printMidDivider(cellWidth, cols);
+    printHeader(cellWidth, size);
+    for(int i = 0; i < strings.size(); ++i) {
+      printCell(strings.get(i), i, size, cellWidth);
     }
-    printRow(tableStrings[rows-1], cellWidth);
-    printFooter(cellWidth, cols);
-    out.flush();
+    printFooter(cellWidth, size);
   }
 
-  private void printRow(String[] cols, int cellWidth)
+  private void printCell(String cell, int i, int cols, int cellWidth)
   {
-    out.print(verticalDivider);
-    for(int i = 0; i < cols.length - 1; ++i)
-    {
-      printCell(cols[i], cellWidth);
+    if (i % cols == 0) {
+      if (i != 0) {
+        printMidDivider(cellWidth, cols);
+      }
       out.print(verticalDivider);
     }
-    printCell(cols[cols.length - 1], cellWidth);
-    out.println(verticalDivider);
-  }
-
-  private void printCell(String cell, int cellWidth)
-  {
     out.print(padLeft(cell, cellWidth + 1) + " ");
+    out.print(verticalDivider);
+    if (i % cols == cols - 1) {
+      out.println();
+    }
   }
 
   public static String padLeft(String s, int n)

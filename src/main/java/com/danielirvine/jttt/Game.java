@@ -6,26 +6,31 @@ public class Game
   private Board board;
   private final Player x, o;
 
-  public Game(Board board, Player x, Player o)
+  public Game(MoveProvider moveProvider, Board board, boolean xHuman, boolean oHuman)
   {
     this.board = board;
-    this.x = x;
-    this.o = x;
+    this.x = createPlayer(moveProvider, 'X', xHuman);
+    this.o = createPlayer(moveProvider, 'O', oHuman);
   }
 
-  public Game(int size, Player x, Player o)
+  public Game(MoveProvider moveProvider, int size, boolean xHuman, boolean oHuman)
   {
-    this(Board.empty(size), x, o);
+    this(moveProvider, Board.empty(size), xHuman, oHuman);
+  }
+
+  private static Player createPlayer(MoveProvider moveProvider, char mark, boolean human)
+  {
+    return new HumanPlayer(moveProvider, mark);
   }
 
   public Player getNextPlayer()
   {
-    return board.getNextPlayerMark() == 'X' ? x : o;
+    return board.getNumPlayedSquares() % 2 == 0 ? x : o;
   }
 
   public Player getLastPlayer()
   {
-    return board.getNextPlayerMark() == 'X' ? o : x;
+    return board.getNumPlayedSquares() % 2 == 0 ? o : x;
   }
 
   public void playNextMove()
@@ -42,6 +47,11 @@ public class Game
   public boolean isDrawn()
   {
     return board.isDrawn();
+  }
+
+  public boolean isFinished()
+  {
+    return isDrawn() || isWon();
   }
 
   public int getSize()

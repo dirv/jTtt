@@ -12,6 +12,6 @@ public class HumanPlayer extends Player
 
   public int getNextMove()
   {
-    return moveProvider.getMove();
+    return moveProvider.getMove(getMark()) - 1;
   }
 }
