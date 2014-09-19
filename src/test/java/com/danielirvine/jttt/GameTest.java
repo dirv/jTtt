@@ -17,9 +17,10 @@ public class GameTest {
 
   @Test
   public void playsAComputerMove() {
-    FakeMoveProvider moveProvider = new FakeMoveProvider(5);
-    g = new Game(moveProvider, 3, true, false);
-
+    Board board = new Board(3, "XX-OO----");
+    g = new Game(null, board, false, false);
+    g.playNextMove();
+    assertEquals('O', g.getNextPlayer().getMark());
   }
 
   private HumanPlayer humanPlayer() {

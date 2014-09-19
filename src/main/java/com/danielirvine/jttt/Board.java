@@ -54,6 +54,12 @@ public class Board {
     return board.replace(new Character(unplayed).toString(), "").length();
   }
 
+  public int[] getUnplayedSquares() {
+    return IntStream.range(0, size*size)
+      .filter(c -> board.charAt(c) == unplayed)
+      .toArray();
+  }
+
   private boolean isPlayed(int sq) {
     return markAt(sq) != unplayed;
   }

@@ -16,7 +16,7 @@ public class Game {
   }
 
   private static Player createPlayer(MoveProvider moveProvider, char mark, boolean human) {
-    return new HumanPlayer(moveProvider, mark);
+    return human ? new HumanPlayer(moveProvider, mark) : new ComputerPlayer(mark);
   }
 
   public Player getNextPlayer() {
