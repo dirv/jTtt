@@ -9,38 +9,38 @@ public class ComputerPlayer extends Player {
   }
 
   public Board playNextMove(Board board) {
-    return findBestMove(board, getMark(), board.getUnplayedSquares().length).getBoard();
+    return findBestMove(board, getMark(), -infinity, infinity, board.getUnplayedSquares().length).getBoard();
   }
 
-  private PossibleMove findBestMove(Board board, char mark, int depth) {
+  private PossibleMove findBestMove(Board board, char mark, int alpha, int beta, int depth) {
     if (depth == 0) {
       return new PossibleMove(board, 0);
     }
 
-    int bestScore = -infinity;
-    PossibleMove bestMove = null;
+    Board bestMove = null;
     for(int sq : board.getUnplayedSquares()) {
       Board newBoard = board.play(sq, mark);
-      int score;
-      PossibleMove move;
+      int score = alpha;
       if(newBoard.isWon()) {
         score = score(newBoard, depth);
       }
       else {
-        move = findBestMove(newBoard, otherMark(mark), depth-1);
-        score = -move.getScore();
+        score = -findBestMove(newBoard, otherMark(mark), -beta, -alpha, depth-1).getScore();
       }
-      if (score > bestScore) {
-        bestMove = new PossibleMove(newBoard, score);
-        bestScore = score;
+      if (score > alpha) {
+        bestMove = newBoard;
+        alpha = score;
+      }
+      if (alpha >= beta) {
+        break;
       }
     }
-    return bestMove;
+    return new PossibleMove(bestMove, alpha);
   }
 
   private int score(Board b, int depth) {
     if (b.isDrawn()) return 0;
-    return depth;
+    return depth + 1;
   }
 
   private char otherMark(char mark) {
