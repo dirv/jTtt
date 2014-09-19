@@ -11,7 +11,7 @@ public abstract class Player {
     return mark;
   }
 
-  protected abstract int getNextMove();
+  protected abstract Board playNextMove(Board board);
 
   public String toString() {
     return Character.toString(mark);

@@ -8,7 +8,7 @@ public class HumanPlayer extends Player {
     this.moveProvider = moveProvider;
   }
 
-  public int getNextMove() {
-    return moveProvider.getMove(getMark()) - 1;
+  public Board playNextMove(Board board) {
+    return board.play(moveProvider.getMove(getMark()) - 1, getMark());
   }
 }

@@ -28,8 +28,7 @@ public class Game {
   }
 
   public void playNextMove() {
-    Player next = getNextPlayer();
-    board = board.play(next.getNextMove(), next.getMark());
+    board = getNextPlayer().playNextMove(board);
   }
 
   public boolean isWon() {
