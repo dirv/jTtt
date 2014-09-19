@@ -36,7 +36,7 @@ public class CliOperations implements MoveProvider {
   public boolean getIsHuman(char mark) {
     String message = String.format("Is player %c human? Choose y or n.", mark);
     String answer = ask(message, validBooleans, s -> s);
-    return answer == "y";
+    return answer.equals("y");
   }
 
   private <T> T ask(String question, List<T> validAnswers, Function<String, T> convert) {
