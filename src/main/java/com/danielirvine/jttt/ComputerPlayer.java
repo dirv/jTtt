@@ -15,26 +15,20 @@ public class ComputerPlayer extends Player {
   }
 
   private PossibleMove findBestMove(Board board, char mark, int alpha, int beta, int depth) {
-    if (depth == 0) {
-      return new PossibleMove(board, 0);
+    if (depth == 0 || board.isWon()) {
+      return new PossibleMove(board, -score(board, depth));
     }
 
     Board bestMove = null;
     for(int sq : board.getUnplayedSquares()) {
       Board newBoard = board.play(sq, mark);
-      int score = alpha;
-      if(newBoard.isWon()) {
-        score = score(newBoard, depth);
-      }
-      else {
-        score = -findBestMove(newBoard, otherMark(mark), -beta, -alpha, depth-1).getScore();
-      }
+      int score = -findBestMove(newBoard, otherMark(mark), -beta, -alpha, depth-1).getScore();
       if (score > alpha) {
         bestMove = newBoard;
         alpha = score;
-      }
-      if (alpha >= beta) {
-        break;
+        if (alpha >= beta) {
+          break;
+        }
       }
     }
     return new PossibleMove(bestMove, alpha);
