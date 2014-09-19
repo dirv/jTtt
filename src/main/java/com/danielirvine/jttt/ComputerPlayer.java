@@ -1,4 +1,5 @@
 package com.danielirvine.jttt;
+import static java.lang.Math.*;
 
 public class ComputerPlayer extends Player {
 
@@ -9,7 +10,8 @@ public class ComputerPlayer extends Player {
   }
 
   public Board playNextMove(Board board) {
-    return findBestMove(board, getMark(), -infinity, infinity, board.getUnplayedSquares().length).getBoard();
+    int maxDepth = min(board.getUnplayedSquares().length, 9);
+    return findBestMove(board, getMark(), -infinity, infinity, maxDepth).getBoard();
   }
 
   private PossibleMove findBestMove(Board board, char mark, int alpha, int beta, int depth) {
