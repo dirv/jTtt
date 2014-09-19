@@ -22,8 +22,4 @@ public class GameTest {
     g.playNextMove();
     assertEquals('O', g.getNextPlayer().getMark());
   }
-
-  private HumanPlayer humanPlayer() {
-    return (HumanPlayer)g.getNextPlayer();
-  }
 }
