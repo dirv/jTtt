@@ -4,13 +4,11 @@ import static org.junit.Assert.*;
 import java.io.*;
 import static org.hamcrest.CoreMatchers.*;
 
-public class GameTest
-{
+public class GameTest {
   private Game g;
 
   @Test
-  public void playsAHumanMove()
-  {
+  public void playsAHumanMove() {
     FakeMoveProvider moveProvider = new FakeMoveProvider(5);
     g = new Game(moveProvider, 3, true, true);
     g.playNextMove();
@@ -18,15 +16,13 @@ public class GameTest
   }
 
   @Test
-  public void playsAComputerMove()
-  {
+  public void playsAComputerMove() {
     FakeMoveProvider moveProvider = new FakeMoveProvider(5);
     g = new Game(moveProvider, 3, true, false);
 
   }
 
-  private HumanPlayer humanPlayer()
-  {
+  private HumanPlayer humanPlayer() {
     return (HumanPlayer)g.getNextPlayer();
   }
 }

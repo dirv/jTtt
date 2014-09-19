@@ -4,13 +4,11 @@ import java.util.stream.*;
 import java.util.*;
 import static java.util.stream.Collectors.*;
 
-public class CliGame
-{
+public class CliGame {
   private final PrintWriter writer;
   private Game game;
 
-  public CliGame(OutputStream out, InputStream in)
-  {
+  public CliGame(OutputStream out, InputStream in) {
     this.writer = new PrintWriter(out, true);
     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
     CliOperations cliOperations = new CliOperations(writer, reader);
@@ -21,33 +19,28 @@ public class CliGame
     display();
   }
 
-  public CliGame(Game game, PrintWriter writer)
-  {
+  public CliGame(Game game, PrintWriter writer) {
     this.writer = writer;
     this.game = game;
   }
 
-  public void playAll()
-  {
+  public void playAll() {
     while(!game.isFinished()) {
       playNextMove();
     }
   }
 
-  public void playNextMove()
-  {
+  public void playNextMove() {
     game.playNextMove();
     display();
   }
 
-  private void display()
-  {
+  private void display() {
     displayBoard();
     displayResult();
   }
 
-  private void displayResult()
-  {
+  private void displayResult() {
     if (game.isWon()) {
       writer.printf("%s wins!\n", game.getLastPlayer().getMark());
     }
@@ -56,19 +49,16 @@ public class CliGame
     }
   }
 
-  private void displayBoard()
-  {
+  private void displayBoard() {
     new TableWriter(writer).print(boardStrings(), game.getSize());
   }
 
-  private List<String> boardStrings()
-  {
+  private List<String> boardStrings() {
     int length = game.getSize() * game.getSize();
     return IntStream.range(0, length).mapToObj(this::cellDisplay).collect(toList());
   }
 
-  private String cellDisplay(int sq)
-  {
+  private String cellDisplay(int sq) {
     char mark = game.markAt(sq);
     return mark == Board.unplayed ? Integer.toString(sq + 1) : Character.toString(mark);
   }

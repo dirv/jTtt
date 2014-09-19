@@ -4,8 +4,7 @@ import java.util.stream.*;
 import java.util.*;
 import static java.util.stream.Stream.*;
 
-public class TableWriter
-{
+public class TableWriter {
   private PrintWriter out;
   private static char topLeft = '/';
   private static char topRight = '\\';
@@ -19,13 +18,11 @@ public class TableWriter
   private static char verticalDivider = '|';
   private static char horizontalDivider = '-';
 
-  public TableWriter(PrintWriter out)
-  {
+  public TableWriter(PrintWriter out) {
     this.out = out;
   }
 
-  public void print(List<String> strings, int size)
-  {
+  public void print(List<String> strings, int size) {
     int cellWidth = strings.stream().mapToInt(String::length).max().getAsInt();
 
     printHeader(cellWidth, size);
@@ -35,8 +32,7 @@ public class TableWriter
     printFooter(cellWidth, size);
   }
 
-  private void printCell(String cell, int i, int cols, int cellWidth)
-  {
+  private void printCell(String cell, int i, int cols, int cellWidth) {
     if (i % cols == 0) {
       if (i != 0) {
         printMidDivider(cellWidth, cols);
@@ -50,16 +46,13 @@ public class TableWriter
     }
   }
 
-  public static String padLeft(String s, int n)
-  {
+  public static String padLeft(String s, int n) {
     return String.format("%1$" + n + "s", s);
   }
 
-  private void printDivideLine(char left, char right, char join, int cellWidth, int cols)
-  {
+  private void printDivideLine(char left, char right, char join, int cellWidth, int cols) {
     out.print(left);
-    for(int i = 0; i < cols - 1; ++i )
-    {
+    for(int i = 0; i < cols - 1; ++i ) {
       printHorizontalDivider(cellWidth + 2);
       out.print(join);
     }
@@ -67,25 +60,20 @@ public class TableWriter
     out.println(right);
   }
 
-  private void printMidDivider(int cellWidth, int cols)
-  {
+  private void printMidDivider(int cellWidth, int cols) {
     printDivideLine(leftJoin, rightJoin, middleJoin, cellWidth, cols);
   }
 
-  private void printHeader(int cellWidth, int cols)
-  {
+  private void printHeader(int cellWidth, int cols) {
     printDivideLine(topLeft, topRight, topJoin, cellWidth, cols);
   }
 
-  private void printFooter(int cellWidth, int cols)
-  {
+  private void printFooter(int cellWidth, int cols) {
     printDivideLine(bottomLeft, bottomRight, bottomJoin, cellWidth, cols);
   }
 
-  private void printHorizontalDivider(int cellWidth)
-  {
-    for(int j = 0; j < cellWidth; ++j)
-    {
+  private void printHorizontalDivider(int cellWidth) {
+    for(int j = 0; j < cellWidth; ++j) {
       out.print(horizontalDivider);
     }
   }
