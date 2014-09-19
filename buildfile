@@ -7,6 +7,7 @@ define 'jTtt' do
   project.group = '["com.danielirvine.jttt"]'
   project.version = '["1.0-SNAPSHOT"]'
   package :jar, :id => 'jTtt'
+  compile.with 'org.springframework:spring-webmvc:jar:4.1.0.RELEASE'
   compile.options.target = '1.8'
   compile.options.source = '1.8'
   manifest['Main-Class'] = 'com.danielirvine.jttt.App'
