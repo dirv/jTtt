@@ -1,5 +1,16 @@
 desc 'jTtt-web'
+
 define 'jTtt-web' do
+
+  target_dir = _(:target, :src, "main/webapp/resources/js")
+  source_dir = _(:source, :main, :coffee)
+
+  assets.paths << file(target_dir => [FileList["#{source_dir}/**/*.coffee"]]) do
+    puts "Compiling coffeescript"
+    sh "coffee --bare --compile --output #{target_dir} #{source_dir}"
+    touch target_dir
+  end
+
   project.group = 'com.danielirvine.jttt'
   project.version = '1'
   CORE = Dir['../cli/**/*.jar']
@@ -7,9 +18,9 @@ define 'jTtt-web' do
   JETTY = Buildr::group('jetty-server', 'jetty-util', :under => 'org.eclipse.jetty', :version => '9.2.3.v20140905')
   SERVLET_API = 'javax.servlet:servlet-api:jar:2.5'
   compile.with transitive([CORE, JETTY, SPRING, SERVLET_API])
-  package(:jar, :id => 'jTtt-web')
+  package(:war, :id => 'jTtt-web')
   compile.dependencies.each do |c|
-    package(:jar).merge(c).exclude('META-INF/MANIFEST.MF')
+    package(:war).merge(c).exclude('META-INF/MANIFEST.MF')
   end
   manifest['Main-Class'] = 'com.danielirvine.jttt.web.WebHandler'
   compile.options.target = '1.8'
