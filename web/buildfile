@@ -1,0 +1,16 @@
+desc 'jTtt-web'
+define 'jTtt-web' do
+  project.group = 'com.danielirvine.jttt'
+  project.version = '1'
+  SPRING = 'org.springframework:spring-webmvc:jar:4.1.0.RELEASE'
+  JETTY = Buildr::group('jetty-server', 'jetty-util', :under => 'org.eclipse.jetty', :version => '9.2.3.v20140905')
+  SERVLET_API = 'javax.servlet:servlet-api:jar:2.5'
+  compile.with transitive([JETTY, SPRING, SERVLET_API])
+  package(:jar, :id => 'jTtt-web')
+  compile.dependencies.each do |c|
+    package(:jar).merge(c).exclude('META-INF/MANIFEST.MF')
+  end
+  manifest['Main-Class'] = 'com.danielirvine.jttt.web.WebHandler'
+  compile.options.target = '1.8'
+  compile.options.source = '1.8'
+end
