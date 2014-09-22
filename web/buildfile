@@ -2,10 +2,11 @@ desc 'jTtt-web'
 define 'jTtt-web' do
   project.group = 'com.danielirvine.jttt'
   project.version = '1'
+  CORE = Dir['../cli/**/*.jar']
   SPRING = 'org.springframework:spring-webmvc:jar:4.1.0.RELEASE'
   JETTY = Buildr::group('jetty-server', 'jetty-util', :under => 'org.eclipse.jetty', :version => '9.2.3.v20140905')
   SERVLET_API = 'javax.servlet:servlet-api:jar:2.5'
-  compile.with transitive([JETTY, SPRING, SERVLET_API])
+  compile.with transitive([CORE, JETTY, SPRING, SERVLET_API])
   package(:jar, :id => 'jTtt-web')
   compile.dependencies.each do |c|
     package(:jar).merge(c).exclude('META-INF/MANIFEST.MF')
