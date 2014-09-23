@@ -1,6 +1,6 @@
-body { 
- text-align: center; 
- font-family: Helvetica; 
+body {
+ text-align: center;
+ font-family: Helvetica;
 }
 
 input {
@@ -8,14 +8,14 @@ input {
   font-size: 12pt;
 }
 
-td { 
-  border: 1px solid black; 
-  vertical-align: middle; 
+td {
+  border: 1px solid black;
+  vertical-align: middle;
   font-size: 30pt;
 }
 
-table { 
-  width: 600px; 
+table {
+  width: 600px;
   height: 600px; 
   table-layout: fixed; 
   margin: auto; 

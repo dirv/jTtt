@@ -9,8 +9,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/assets/")
-          .addResourceLocations("/target/assets/resources/")
+        registry.addResourceHandler("/resources/**")
+          //.addResourceLocations("classpath:/assets/")
+          .addResourceLocations("/assets/resources/")
           .addResourceLocations("/../src/main/webapp/resources/");
     }
 

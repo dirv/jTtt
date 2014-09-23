@@ -16,6 +16,8 @@ public class WebHandler {
 
         final ServletHolder servletHolder = new ServletHolder(new DispatcherServlet(applicationContext));
         final ServletContextHandler context = new ServletContextHandler();
+        context.setResourceBase(".");
+        System.out.println(context.getResourceBase());
         context.setContextPath("/");
         context.addServlet(servletHolder, "/*");
 
