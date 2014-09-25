@@ -1,3 +1,31 @@
+require 'lock_jar/buildr'
+
+def jetty_jars(*jars)
+  jars.map { |j| "org.eclipse.jetty:#{j}:jar:9.2.3.v20140905"}
+end
+
+CORE = Dir['../cli/**/*.jar']
+SPRING = 'org.springframework:spring-webmvc:jar:4.1.0.RELEASE'
+JETTY = jetty_jars('jetty-security', 'jetty-jsp', 'jetty-webapp', 'jetty-servlet', 'jetty-server', 'jetty-util')
+SERVLET_API = 'javax.servlet:javax.servlet-api:jar:3.1.0'
+
+
+ALL = [CORE, SPRING, JETTY, SERVLET_API].flatten
+
+lock_jar do
+
+  ALL.each do |j|
+    str = j.to_s
+
+    if str.include?(":")
+      jar str
+    else
+      local str
+    end
+  end
+
+end
+
 desc 'jTtt-web'
 
 define 'jTtt-web' do
@@ -13,15 +41,15 @@ define 'jTtt-web' do
 
   project.group = 'com.danielirvine.jttt'
   project.version = '1'
-  CORE = Dir['../cli/**/*.jar']
-  SPRING = 'org.springframework:spring-webmvc:jar:4.1.0.RELEASE'
-  JETTY = Buildr::group('jetty-servlet', 'jetty-server', 'jetty-util', :under => 'org.eclipse.jetty', :version => '9.2.3.v20140905')
-  SERVLET_API = 'javax.servlet:javax.servlet-api:jar:3.1.0'
-  compile.with transitive([CORE, JETTY, SPRING, SERVLET_API])
+
+  compile.with lock_jars
   package(:jar, :id => 'jTtt-web')
   package(:war, :id => 'jTtt-web')
   compile.dependencies.each do |c|
-    package(:jar).merge(c).exclude('META-INF/MANIFEST.MF')
+
+    # exclude signatures to avoid signing errors, and existing war manifests
+    package(:jar).merge(c)
+      .exclude('META-INF/MANIFEST.MF', 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA')
   end
   manifest['Main-Class'] = 'com.danielirvine.jttt.web.WebHandler'
   compile.options.target = '1.8'

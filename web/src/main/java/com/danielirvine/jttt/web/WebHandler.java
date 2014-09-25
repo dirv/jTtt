@@ -3,9 +3,11 @@ package com.danielirvine.jttt.web;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
-
+import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.webapp.WebAppContext;
 
 public class WebHandler {
 
@@ -14,19 +16,19 @@ public class WebHandler {
         final AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
         applicationContext.register(WebConfig.class);
 
-        final ServletHolder servletHolder = new ServletHolder(new DispatcherServlet(applicationContext));
-        final ServletContextHandler context = new ServletContextHandler();
-        context.setResourceBase(".");
-        System.out.println(context.getResourceBase());
+        final WebAppContext context = new WebAppContext();
+        context.setResourceBase("src/main/webapp");
         context.setContextPath("/");
-        context.addServlet(servletHolder, "/*");
 
-        String webPort = System.getenv("PORT");
-        if (webPort == null || webPort.isEmpty()) {
-            webPort = "8080";
-        }
 
-        final Server server = new Server(Integer.valueOf(webPort));
+        final ServletHolder servletHolder = new ServletHolder(new DispatcherServlet(applicationContext));
+        context.addServlet(servletHolder, "/game/*");
+
+        final ServletHolder defaultServlet = new ServletHolder("default", DefaultServlet.class);
+        defaultServlet.setInitParameter("dirAllowed","true");
+        context.addServlet(defaultServlet,"/");
+        int port = 8080;
+        final Server server = new Server(port);
 
         server.setHandler(context);
 

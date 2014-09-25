@@ -3,10 +3,10 @@
 
   <head>
     <title>Java TTT</title>
-    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css">
   </head>
   <body>
-    <form action="game"> 
+    <form action="game">
       <div id="grid"> 
         <div class="cell">
           <p>X is...</p>
