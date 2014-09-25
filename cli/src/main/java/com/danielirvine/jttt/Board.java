@@ -5,12 +5,12 @@ import java.util.stream.*;
 import static java.util.stream.Collectors.*;
 import static java.util.stream.Stream.*;
 
-public class Board {
+class Board {
   private int size;
   private String board;
   public static char unplayed = '-';
 
-  Board(int size, String board) {
+  public Board(int size, String board) {
     this.size = size;
     this.board = board;
   }
