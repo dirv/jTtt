@@ -26,14 +26,16 @@ lock_jar do
 
 end
 
+coffee_files = FileList["**/*.coffee"]
+
 desc 'jTtt-web'
 
 define 'jTtt-web' do
 
-  target_dir = _(:target, :src, "main/webapp/resources/js")
+  target_dir = _(:target, :generated)
   source_dir = _(:source, :main, :coffee)
 
-  assets.paths << file(target_dir => [FileList["#{source_dir}/**/*.coffee"]]) do
+  assets.paths << file(target_dir => [coffee_files]) do
     puts "Compiling coffeescript"
     sh "coffee --bare --compile --output #{target_dir} #{source_dir}"
     touch target_dir
@@ -43,10 +45,10 @@ define 'jTtt-web' do
   project.version = '1'
 
   compile.with lock_jars
+  #compile.with coffee_files
   package(:jar, :id => 'jTtt-web')
   package(:war, :id => 'jTtt-web')
   compile.dependencies.each do |c|
-
     # exclude signatures to avoid signing errors, and existing war manifests
     package(:jar).merge(c)
       .exclude('META-INF/MANIFEST.MF', 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA')
@@ -55,3 +57,5 @@ define 'jTtt-web' do
   compile.options.target = '1.8'
   compile.options.source = '1.8'
 end
+
+task :compile => coffee_files

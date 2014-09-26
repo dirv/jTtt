@@ -11,7 +11,6 @@
       <% for (int row = 0; row < board_size; ++row) { %>
         <tr>
           <% for (int row = 0; row < board_size; ++col) { %>
-          <% (0...@board_size).each do |col| %>
             <td data-id="sq-<%= row * board_size + col %>">
               <a />
             </td>
