@@ -47,6 +47,10 @@ public class Game {
     return board.getSize();
   }
 
+  public int getNumSquares() {
+    return board.getNumSquares();
+  }
+
   public char markAt(int sq) {
     return board.markAt(sq);
   }

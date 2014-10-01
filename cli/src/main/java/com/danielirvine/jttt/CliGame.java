@@ -54,8 +54,7 @@ public class CliGame {
   }
 
   private List<String> boardStrings() {
-    int length = game.getSize() * game.getSize();
-    return IntStream.range(0, length).mapToObj(this::cellDisplay).collect(toList());
+    return IntStream.range(0, game.getNumSquares()).mapToObj(this::cellDisplay).collect(toList());
   }
 
   private String cellDisplay(int sq) {

@@ -15,7 +15,7 @@ public class WebGame implements MoveProvider {
   }
 
   public WebGameState getGameState() {
-    int length = game.getSize() * game.getSize();
+    int length = game.getNumSquares();
     char[] board = new char[length];
     for(int i = 0; i < length; ++i) {
       board[i] = game.markAt(i);

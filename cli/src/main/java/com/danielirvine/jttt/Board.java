@@ -33,6 +33,10 @@ public class Board {
     return size;
   }
 
+  public int getNumSquares() {
+    return size * size;
+  }
+
   public boolean isDrawn() {
     return board.indexOf(unplayed) == -1 && !isWon();
   }
@@ -55,7 +59,7 @@ public class Board {
   }
 
   public int[] getUnplayedSquares() {
-    return IntStream.range(0, size*size)
+    return IntStream.range(0, getNumSquares())
       .filter(c -> board.charAt(c) == unplayed)
       .toArray();
   }
