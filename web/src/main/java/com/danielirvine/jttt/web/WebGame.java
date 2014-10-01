@@ -61,7 +61,7 @@ public class WebGame implements MoveProvider {
     if (game.isWon()) {
       return winString();
     } else if (game.isDrawn()) {
-      return darwString();
+      return drawString();
     } else {
       return moveString();
     }

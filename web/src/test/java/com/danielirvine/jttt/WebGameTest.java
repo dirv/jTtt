@@ -7,11 +7,13 @@ import static org.junit.Assert.*;
 public class WebGameTest {
 
   private WebGame webGame;
+  private static final boolean COMPUTER = false;
+  private static final boolean HUMAN = true;
 
   @Test
   public void createsNewGame() throws Exception {
 
-    webGame = new WebGame(3, true, true);
+    webGame = new WebGame(3, HUMAN, HUMAN);
 
     assertEquals("---------", state().getBoard());
     assertEquals("X's go, please click a square", state().getStatusText());
@@ -22,7 +24,7 @@ public class WebGameTest {
   @Test
   public void playsAHumanMove() throws Exception {
 
-    webGame = new WebGame(3, true, true);
+    webGame = new WebGame(3, HUMAN, HUMAN);
     webGame.setNextMove(5);
     webGame.playNextMove();
 
@@ -32,20 +34,20 @@ public class WebGameTest {
 
   @Test
   public void playsAComputerMove() throws Exception {
-    webGame = new WebGame(new Board(3, "XX-OO----"), false, false);
+    webGame = new WebGame(new Board(3, "XX-OO----"), COMPUTER, COMPUTER);
     webGame.playNextMove();
     assertEquals("XXXOO----", state().getBoard());
   }
 
   @Test
-  public void determinesIfGameIsFinisehd() throws Exception {
-    webGame = new WebGame(new Board(3, "XXXOO----"), false, false);
+  public void determinesIfGameIsFinished() throws Exception {
+    webGame = new WebGame(new Board(3, "XXXOO----"), COMPUTER, COMPUTER);
     assertEquals(true, state().getFinished());
   }
 
   @Test
   public void hasNoAvailableMoveAfterPlaying() {
-    webGame = new WebGame(3, true, true);
+    webGame = new WebGame(3, HUMAN, HUMAN);
     webGame.setNextMove(5);
     webGame.playNextMove();
     assertEquals(false, state().getAlreadyHasMove());
@@ -53,19 +55,19 @@ public class WebGameTest {
 
   @Test
 	public void hasAvailableMoveIfComputerIsNext() {
-    webGame = new WebGame(3, false, false);
+    webGame = new WebGame(3, COMPUTER, COMPUTER);
     assertEquals(true, state().getAlreadyHasMove());
   }
 
   @Test
   public void showsWinningMessage() {
-    webGame = new WebGame(new Board(3, "XXXOO----"), false, false);
+    webGame = new WebGame(new Board(3, "XXXOO----"), COMPUTER, COMPUTER);
     assertEquals("X wins!", state().getStatusText());
   }
 
   @Test
   public void showsDrawMessage() {
-    webGame = new WebGame(new Board(3, "XXOOOXXOX"), false, false);
+    webGame = new WebGame(new Board(3, "XXOOOXXOX"), COMPUTER, COMPUTER);
     assertEquals("It's a draw!", state().getStatusText());
   }
 
