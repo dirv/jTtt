@@ -37,6 +37,11 @@ public class WebGameTest {
     assertEquals("XXXOO----", state().getBoard());
   }
 
+  @Test
+  public void determinesIfGameIsFinisehd() throws Exception {
+    webGame = new WebGame(new Board(3, "XXXOO----"), false, false);
+    assertEquals(true, state().getFinished());
+  }
 
   private WebGameState state() {
     return webGame.getGameState();
