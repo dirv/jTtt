@@ -14,12 +14,16 @@ public class WebGame implements MoveProvider {
     this.game = new Game(this, size, xHuman, oHuman);
   }
 
-  public WebGameState getGameState() {
+  private String boardString() {
     int length = game.getNumSquares();
     char[] board = new char[length];
     for(int i = 0; i < length; ++i) {
       board[i] = game.markAt(i);
     }
+    return String.valueOf(board);
+  }
+
+  public WebGameState getGameState() {
     boolean requiresInput = !game.getNextPlayer().hasAvailableMove();
     char mark = game.getNextPlayer().getMark();
 
@@ -30,7 +34,7 @@ public class WebGame implements MoveProvider {
       message = "wait";
     }
     String status = String.format("%s's go, please %s", mark, message);
-    return new WebGameState(String.valueOf(board),
+    return new WebGameState(boardString(),
         status,
         requiresInput,
         game.isFinished()
