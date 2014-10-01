@@ -15,47 +15,6 @@ public class WebGame implements MoveProvider {
     this.game = new Game(this, size, xHuman, oHuman);
   }
 
-  private String boardString() {
-    int length = game.getNumSquares();
-    char[] board = new char[length];
-    for(int i = 0; i < length; ++i) {
-      board[i] = game.markAt(i);
-    }
-    return String.valueOf(board);
-  }
-
-  private String instructionString() {
-    if (game.getNextPlayer().hasAvailableMove()) {
-      return "wait";
-    }
-    return "click a square";
-  }
-
-  private String statusString() {
-    if (game.isWon()) {
-      return winString();
-    } else if (game.isDrawn()) {
-      return darwString();
-    } else {
-      return moveString();
-    } 
-  }
-
-  private String drawString() {
-    return String.format("It's a draw!");
-  }
-
-  private String winString() {
-    return String.format("%s wins!",
-        game.getLastPlayer().getMark());
-  }
-
-  private String moveString() {
-    return String.format("%s's go, please %s",
-        game.getNextPlayer().getMark(),
-        instructionString());
-  }
-
   public WebGameState getGameState() {
     return new WebGameState(boardString(),
         statusString(),
@@ -80,5 +39,46 @@ public class WebGame implements MoveProvider {
     Integer thisMove = nextMove;
     nextMove = null;
     return thisMove;
+  }
+
+  private String boardString() {
+    int length = game.getNumSquares();
+    char[] board = new char[length];
+    for(int i = 0; i < length; ++i) {
+      board[i] = game.markAt(i);
+    }
+    return String.valueOf(board);
+  }
+
+  private String instructionString() {
+    if (game.getNextPlayer().hasAvailableMove()) {
+      return "wait";
+    }
+    return "click a square";
+  }
+
+  private String statusString() {
+    if (game.isWon()) {
+      return winString();
+    } else if (game.isDrawn()) {
+      return darwString();
+    } else {
+      return moveString();
+    }
+  }
+
+  private String drawString() {
+    return String.format("It's a draw!");
+  }
+
+  private String winString() {
+    return String.format("%s wins!",
+        game.getLastPlayer().getMark());
+  }
+
+  private String moveString() {
+    return String.format("%s's go, please %s",
+        game.getNextPlayer().getMark(),
+        instructionString());
   }
 }
