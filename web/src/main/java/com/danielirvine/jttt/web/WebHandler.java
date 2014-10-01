@@ -28,7 +28,7 @@ public class WebHandler {
         context.addServlet(servletHolder, "/game/*");
 
         final ServletHolder defaultServlet = new ServletHolder("default", DefaultServlet.class);
-        defaultServlet.setInitParameter("dirAllowed","true");
+        defaultServlet.setInitParameter("dirAllowed","false");
         context.addServlet(defaultServlet,"/");
         int port = 8080;
         final Server server = new Server(port);

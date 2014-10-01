@@ -17,7 +17,7 @@ public class WebGameTest {
 
     assertEquals("---------", state().getBoard());
     assertEquals("X's go, please click a square", state().getStatusText());
-    assertEquals(false, state().getAlreadyHasMove());
+    assertEquals("human", state().getNextMove());
     assertEquals(false, state().getFinished());
   }
 
@@ -50,13 +50,13 @@ public class WebGameTest {
     webGame = new WebGame(3, HUMAN, HUMAN);
     webGame.setNextMove(5);
     webGame.playNextMove();
-    assertEquals(false, state().getAlreadyHasMove());
+    assertEquals("human", state().getNextMove());
   }
 
   @Test
 	public void hasAvailableMoveIfComputerIsNext() {
     webGame = new WebGame(3, COMPUTER, COMPUTER);
-    assertEquals(true, state().getAlreadyHasMove());
+    assertEquals("computer", state().getNextMove());
   }
 
   @Test

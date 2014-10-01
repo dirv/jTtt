@@ -2,7 +2,7 @@
 <html>
 
   <head>
-    <title>Java TTT</title>
+    <title>Java TTT: Hi</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css">
   </head>
   <body>

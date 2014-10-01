@@ -26,7 +26,11 @@ lock_jar do
 
 end
 
-coffee_files = FileList["**/*.coffee"]
+
+def build_coffee_assets(source_dir, target_dir)
+  sh "coffee --bare --compile --output #{target_dir} #{source_dir}"
+  touch target_dir
+end
 
 desc 'jTtt-web'
 
@@ -34,11 +38,23 @@ define 'jTtt-web' do
 
   target_dir = _(:target, :generated)
   source_dir = _(:source, :main, :coffee)
+  coffee_files = FileList[_(source_dir, "**/*.coffee")]
 
-  assets.paths << file(target_dir => [coffee_files]) do
+  assets.paths << file(target_dir => coffee_files) do
     puts "Compiling coffeescript"
-    sh "coffee --bare --compile --output #{target_dir} #{source_dir}"
-    touch target_dir
+    build_coffee_assets(source_dir, target_dir)
+  end
+
+  test do
+    puts "Compiling coffeescript tests"
+    test_source_dir = _(:source, :test, :coffee)
+    build_coffee_assets(test_source_dir, _(:target, :test, :coffee))
+
+    #runner_files = FileList[_(test_source_dir, "**/*.html"))]
+    #runner_files.each do |f|
+    #  target = _(target_dir, File.basename(f))
+    #end
+
   end
 
   project.group = 'com.danielirvine.jttt'
@@ -58,4 +74,4 @@ define 'jTtt-web' do
   compile.options.source = '1.8'
 end
 
-task :compile => coffee_files
+#task :compile => coffee_files

@@ -4,13 +4,13 @@ public class WebGameState {
 
   private final String board;
   private final String statusText;
-  private final boolean alreadyHasMove;
+  private final String nextMove;
   private final boolean finished;
 
-  public WebGameState(String board, String statusText, boolean alreadyHasMove, boolean finished) {
+  public WebGameState(String board, String statusText, String nextMove, boolean finished) {
     this.board = board;
     this.statusText = statusText;
-    this.alreadyHasMove = alreadyHasMove;
+    this.nextMove = nextMove;
     this.finished = finished;
   }
 
@@ -22,8 +22,8 @@ public class WebGameState {
     return statusText;
   }
 
-  public boolean getAlreadyHasMove() {
-    return alreadyHasMove;
+  public String getNextMove() {
+    return nextMove;
   }
 
   public boolean getFinished() {

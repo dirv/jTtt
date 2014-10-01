@@ -18,7 +18,7 @@ public class WebGame implements MoveProvider {
   public WebGameState getGameState() {
     return new WebGameState(boardString(),
         statusString(),
-        game.getNextPlayer().hasAvailableMove(),
+        game.nextPlayerIdentifier(),
         game.isFinished()
         );
   }
