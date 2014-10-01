@@ -23,19 +23,24 @@ public class WebGame implements MoveProvider {
     return String.valueOf(board);
   }
 
+  private String instructionString() {
+    if (game.getNextPlayer().hasAvailableMove()) {
+      return "wait";
+    }
+    return "click a square";
+  }
+
+  private String statusString() {
+    return String.format("%s's go, please %s",
+        game.getNextPlayer().getMark(),
+        instructionString());
+  }
+
   public WebGameState getGameState() {
     boolean requiresInput = !game.getNextPlayer().hasAvailableMove();
-    char mark = game.getNextPlayer().getMark();
 
-    String message = null;
-    if(requiresInput) {
-      message = "click a square";
-    } else {
-      message = "wait";
-    }
-    String status = String.format("%s's go, please %s", mark, message);
     return new WebGameState(boardString(),
-        status,
+        statusString(),
         requiresInput,
         game.isFinished()
         );
