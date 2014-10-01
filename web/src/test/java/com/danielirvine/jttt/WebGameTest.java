@@ -43,6 +43,20 @@ public class WebGameTest {
     assertEquals(true, state().getFinished());
   }
 
+  @Test
+  public void hasNoAvailableMoveAfterPlaying() {
+    webGame = new WebGame(3, true, true);
+    webGame.setNextMove(5);
+    webGame.playNextMove();
+    assertEquals(false, state().getAlreadyHasMove());
+  }
+
+  @Test
+	public void hasAvailableMoveIfComputerIsNext() {
+    webGame = new WebGame(3, false, false);
+    assertEquals(true, state().getAlreadyHasMove());
+  } 
+
   private WebGameState state() {
     return webGame.getGameState();
   }
