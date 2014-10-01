@@ -8,6 +8,8 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.server.session.HashSessionManager;
+import org.eclipse.jetty.server.session.SessionHandler;
 
 public class WebHandler {
 
@@ -19,6 +21,7 @@ public class WebHandler {
         final WebAppContext context = new WebAppContext();
         context.setResourceBase("src/main/webapp");
         context.setContextPath("/");
+        context.setSessionHandler(new SessionHandler(new HashSessionManager()));
 
 
         final ServletHolder servletHolder = new ServletHolder(new DispatcherServlet(applicationContext));

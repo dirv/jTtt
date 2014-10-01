@@ -33,6 +33,10 @@ public class CliOperations implements MoveProvider {
     return size;
   }
 
+  public boolean hasAvailableMove() {
+    return true;
+  }
+
   public boolean getIsHuman(char mark) {
     String message = String.format("Is player %c human? Choose y or n.", mark);
     String answer = ask(message, validBooleans, s -> s);

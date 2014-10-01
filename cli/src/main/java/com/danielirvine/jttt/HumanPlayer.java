@@ -9,6 +9,11 @@ public class HumanPlayer extends Player {
   }
 
   @Override
+  public boolean hasAvailableMove() {
+    return moveProvider.hasAvailableMove();
+  }
+
+  @Override
   public Board playNextMove(Board board) {
     return board.play(moveProvider.getMove(getMark()) - 1, getMark());
   }

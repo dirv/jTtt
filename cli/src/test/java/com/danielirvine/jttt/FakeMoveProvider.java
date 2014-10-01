@@ -16,4 +16,8 @@ public class FakeMoveProvider implements MoveProvider {
   public void setNextMove(int sq) {
     moves.add(sq);
   }
+
+  public boolean hasAvailableMove() {
+    return true;
+  }
 }

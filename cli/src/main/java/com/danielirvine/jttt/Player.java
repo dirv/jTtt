@@ -12,6 +12,7 @@ public abstract class Player {
   }
 
   protected abstract Board playNextMove(Board board);
+  public abstract boolean hasAvailableMove();
 
   public String toString() {
     return Character.toString(mark);

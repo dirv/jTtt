@@ -15,4 +15,3 @@ public class GameController {
     return new HashMap<String, String>();
   }
 }
-

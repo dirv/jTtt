@@ -5,7 +5,7 @@ import java.util.stream.*;
 import static java.util.stream.Collectors.*;
 import static java.util.stream.Stream.*;
 
-class Board {
+public class Board {
   private int size;
   private String board;
   public static char unplayed = '-';

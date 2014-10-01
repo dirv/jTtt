@@ -5,7 +5,7 @@ public class Game {
   private Board board;
   private final Player x, o;
 
-  Game(MoveProvider moveProvider, Board board, boolean xHuman, boolean oHuman) {
+  public Game(MoveProvider moveProvider, Board board, boolean xHuman, boolean oHuman) {
     this.board = board;
     this.x = createPlayer(moveProvider, 'X', xHuman);
     this.o = createPlayer(moveProvider, 'O', oHuman);
