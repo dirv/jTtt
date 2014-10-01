@@ -6,36 +6,40 @@ import static org.junit.Assert.*;
 
 public class WebGameTest {
 
+  private WebGame webGame;
+
   @Test
   public void createsNewGame() throws Exception {
 
-    WebGameState actual = new WebGame(3, true, true).getGameState();
+    webGame = new WebGame(3, true, true);
 
-    assertEquals("---------", actual.getBoard());
-    assertEquals("X's go, please click a square", actual.getStatusText());
-    assertEquals(false, actual.getAlreadyHasMove());
-    assertEquals(false, actual.getFinished());
+    assertEquals("---------", state().getBoard());
+    assertEquals("X's go, please click a square", state().getStatusText());
+    assertEquals(false, state().getAlreadyHasMove());
+    assertEquals(false, state().getFinished());
   }
 
   @Test
   public void playsAHumanMove() throws Exception {
 
-    WebGame webGame = new WebGame(3, true, true);
+    webGame = new WebGame(3, true, true);
     webGame.setNextMove(5);
     webGame.playNextMove();
-    WebGameState actual = webGame.getGameState();
 
-    assertEquals("----X----", actual.getBoard());
-    assertEquals("O's go, please click a square", actual.getStatusText());
+    assertEquals("----X----", state().getBoard());
+    assertEquals("O's go, please click a square", state().getStatusText());
   }
 
   @Test
   public void playsAComputerMove() throws Exception {
-    WebGame webGame = new WebGame(new Board(3, "XX-OO----"), false, false);
-
+    webGame = new WebGame(new Board(3, "XX-OO----"), false, false);
     webGame.playNextMove();
-    WebGameState actual = webGame.getGameState();
-    assertEquals("XXXXOO----", true, true);
+    assertEquals("XXXOO----", state().getBoard());
+  }
+
+
+  private WebGameState state() {
+    return webGame.getGameState();
   }
 
 }
