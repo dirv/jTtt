@@ -37,11 +37,9 @@ public class WebGame implements MoveProvider {
   }
 
   public WebGameState getGameState() {
-    boolean requiresInput = !game.getNextPlayer().hasAvailableMove();
-
     return new WebGameState(boardString(),
         statusString(),
-        requiresInput,
+        game.getNextPlayer().hasAvailableMove(),
         game.isFinished()
         );
   }

@@ -12,7 +12,7 @@ public class WebGameTest {
 
     assertEquals("---------", actual.getBoard());
     assertEquals("X's go, please click a square", actual.getStatusText());
-    assertEquals(true, actual.getRequiresInput());
+    assertEquals(false, actual.getAlreadyHasMove());
     assertEquals(false, actual.getFinished());
   }
 

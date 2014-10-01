@@ -4,13 +4,13 @@ public class WebGameState {
 
   private final String board;
   private final String statusText;
-  private final boolean requiresInput;
+  private final boolean alreadyHasMove;
   private final boolean finished;
 
-  public WebGameState(String board, String statusText, boolean requiresInput, boolean finished) {
+  public WebGameState(String board, String statusText, boolean alreadyHasMove, boolean finished) {
     this.board = board;
     this.statusText = statusText;
-    this.requiresInput = requiresInput;
+    this.alreadyHasMove = alreadyHasMove;
     this.finished = finished;
   }
 
@@ -22,8 +22,8 @@ public class WebGameState {
     return statusText;
   }
 
-  public boolean getRequiresInput() {
-    return requiresInput;
+  public boolean getAlreadyHasMove() {
+    return alreadyHasMove;
   }
 
   public boolean getFinished() {
