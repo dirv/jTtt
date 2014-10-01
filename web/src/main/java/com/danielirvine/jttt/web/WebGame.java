@@ -32,6 +32,25 @@ public class WebGame implements MoveProvider {
   }
 
   private String statusString() {
+    if (game.isWon()) {
+      return winString();
+    } else if (game.isDrawn()) {
+      return darwString();
+    } else {
+      return moveString();
+    } 
+  }
+
+  private String drawString() {
+    return String.format("It's a draw!");
+  }
+
+  private String winString() {
+    return String.format("%s wins!",
+        game.getLastPlayer().getMark());
+  }
+
+  private String moveString() {
     return String.format("%s's go, please %s",
         game.getNextPlayer().getMark(),
         instructionString());

@@ -55,7 +55,19 @@ public class WebGameTest {
 	public void hasAvailableMoveIfComputerIsNext() {
     webGame = new WebGame(3, false, false);
     assertEquals(true, state().getAlreadyHasMove());
-  } 
+  }
+
+  @Test
+  public void showsWinningMessage() {
+    webGame = new WebGame(new Board(3, "XXXOO----"), false, false);
+    assertEquals("X wins!", state().getStatusText());
+  }
+
+  @Test
+  public void showsDrawMessage() {
+    webGame = new WebGame(new Board(3, "XXOOOXXOX"), false, false);
+    assertEquals("It's a draw!", state().getStatusText());
+  }
 
   private WebGameState state() {
     return webGame.getGameState();
