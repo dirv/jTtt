@@ -5,6 +5,7 @@ import com.danielirvine.jttt.*;
 public class WebGame implements MoveProvider {
 
   private final Game game;
+  private Integer nextMove;
 
   public WebGame(Board existingBoard, boolean xHuman, boolean oHuman) {
     this.game = new Game(this, existingBoard, xHuman, oHuman);
@@ -44,11 +45,21 @@ public class WebGame implements MoveProvider {
         );
   }
 
+  public void setNextMove(int sq) {
+    nextMove = new Integer(sq);
+  }
+
+  public void playNextMove() {
+    game.playNextMove();
+  }
+
   public boolean hasAvailableMove() {
-    return false;
+    return nextMove != null;
   }
 
   public int getMove(char mark) {
-    return 0;
+    Integer thisMove = nextMove;
+    nextMove = null;
+    return thisMove;
   }
 }
