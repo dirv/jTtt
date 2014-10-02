@@ -19,7 +19,7 @@ public class WebHandler {
         applicationContext.register(WebConfig.class);
 
         final WebAppContext context = new WebAppContext();
-        context.setResourceBase("src/main/webapp");
+        context.setResourceBase("target/assets/");
         context.setContextPath("/");
         context.setSessionHandler(new SessionHandler(new HashSessionManager()));
 

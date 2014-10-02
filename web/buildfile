@@ -45,6 +45,8 @@ define 'jTtt-web' do
     build_coffee_assets(source_dir, target_dir)
   end
 
+  assets.paths << _(:source, :main, :webapp)
+
   test do
     puts "Compiling coffeescript tests"
     test_source_dir = _(:source, :test, :coffee)

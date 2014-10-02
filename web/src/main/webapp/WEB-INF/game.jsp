@@ -8,10 +8,10 @@
   </head>
   <body>
     <table data-id="board">
-      <% for (int row = 0; row < board_size; ++row) { %>
+      <% for (int row = 0; row < boardSize; ++row) { %>
         <tr>
-          <% for (int row = 0; row < board_size; ++col) { %>
-            <td data-id="sq-<%= row * board_size + col %>">
+          <% for (int row = 0; row < boardSize; ++col) { %>
+            <td data-id="sq-<%= row * boardSize + col %>">
               <a />
             </td>
           <% } %>

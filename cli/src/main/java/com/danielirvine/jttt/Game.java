@@ -27,6 +27,10 @@ public class Game {
     return board.getNumPlayedSquares() % 2 == 0 ? o : x;
   }
 
+  public String nextPlayerIdentifier() {
+    return getNextPlayer().getIdentifier();
+  }
+
   public void playNextMove() {
     board = getNextPlayer().playNextMove(board);
   }

@@ -15,6 +15,11 @@ public class ComputerPlayer extends Player {
   }
 
   @Override
+  public String getIdentifier() {
+    return "computer";
+  }
+
+  @Override
   public Board playNextMove(Board board) {
     int maxDepth = min(board.getUnplayedSquares().length, 9);
     return findBestMove(board, getMark(), -infinity, infinity, maxDepth).getBoard();

@@ -17,4 +17,9 @@ public class HumanPlayer extends Player {
   public Board playNextMove(Board board) {
     return board.play(moveProvider.getMove(getMark()) - 1, getMark());
   }
+
+  @Override
+  public String getIdentifier() {
+    return "human";
+  }
 }
