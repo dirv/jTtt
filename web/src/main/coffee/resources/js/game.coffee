@@ -28,11 +28,11 @@ class NoughtsAndCrosses.Game
 
   parse: (json) ->
     @setSquare(sq, i, json.finished) for sq, i in @convertBoard(json)
-    @setStatus(json.status_text)
+    @setStatus(json.statusText)
     setTimeout (=> @makeMove('')), 1000 if @shouldPlayComputerMove(json)
 
   shouldPlayComputerMove: (json) ->
-    json.next_move == "computer" && !json.finished
+    json.nextMove == "computer" && !json.finished
 
   makeMove: (sq) ->
     @parseAjax "make_move?sq=" + sq
