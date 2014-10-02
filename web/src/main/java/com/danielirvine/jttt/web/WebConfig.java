@@ -7,7 +7,7 @@ import org.springframework.web.servlet.mvc.Controller;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.danielirvine.jttt.web")
+@ComponentScan(basePackages = "com.danielirvine.jttt.web" )
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean

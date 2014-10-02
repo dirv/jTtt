@@ -8,9 +8,9 @@ CORE = Dir['../cli/**/*.jar']
 SPRING = 'org.springframework:spring-webmvc:jar:4.1.0.RELEASE'
 JETTY = jetty_jars('jetty-security', 'jetty-jsp', 'jetty-webapp', 'jetty-servlet', 'jetty-server', 'jetty-util')
 SERVLET_API = 'javax.servlet:javax.servlet-api:jar:3.1.0'
+JACKSON = ['com.fasterxml.jackson.core:jackson-core:2.4.2', 'com.fasterxml.jackson.core:jackson-databind:2.4.2']
 
-
-ALL = [CORE, SPRING, JETTY, SERVLET_API].flatten
+ALL = [CORE, SPRING, JETTY, SERVLET_API, JACKSON].flatten
 
 lock_jar do
 
@@ -25,7 +25,6 @@ lock_jar do
   end
 
 end
-
 
 def build_coffee_assets(source_dir, target_dir)
   sh "coffee --bare --compile --output #{target_dir} #{source_dir}"
