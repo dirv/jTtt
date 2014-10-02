@@ -20,12 +20,12 @@ public class GameController {
   private WebGameState state;
 
   @RequestMapping("/")
-  public String get() {
+  public String index() {
     return "index";
   }
 
   @RequestMapping("/game")
-  public String get(@RequestParam("size") int size,
+  public String startGame(@RequestParam("size") int size,
       @RequestParam("x") String x,
       @RequestParam("o") String o,
       ModelMap model) {
